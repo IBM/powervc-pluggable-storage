@@ -1,4 +1,4 @@
-PowerVC Test Suite For Pluggable storage Storage Driver Validation
+PowerVC Test Suite For Pluggable Storage Driver Validation
 ---------------
 This test suite provides the REST testing support to validate the pluggable storage driver on PowerVC.
 The tests validate to see if the storage driver is compatible with PowerVC VM life-cycle functions.
