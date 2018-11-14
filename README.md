@@ -6,7 +6,7 @@ The tests validate to see if the storage driver is compatible with PowerVC VM li
 
 Getting Started
 ---------------
-Download **powerVC_Open_Source_Test_Suite** into any Linux or Windows systems which supports Python 2.7.
+Download **powervc-pluggable-storage** into any Linux or Windows systems which supports Python 2.7.
 If you downloaded the zip file then extract the contents to a folder.
 Verify if your folder has these files:
 
@@ -44,7 +44,7 @@ Prerequisites to run the framework:
 
 Installation
 -------------
-To install the framework on your system, go to the framework folder **PowerVC_Open_Source_Test_Suite**
+To install the framework on your system, go to the framework folder **powervc-pluggable-storage**
 and run setup.py like below:
 
 
@@ -68,7 +68,7 @@ Config: Storage_driver_test.conf
 
 Test Suite: Storage_driver_test.testSuite
 
-Go to the framework folder **PowerVC_Open_Source_Test_Suite** and run test suite like below:
+Go to the framework folder **powervc-pluggable-storage** and run test suite like below:
 
 ` nohup python -u tests/smart_script.py <test suite file path> <configuration file path> & `
 
@@ -140,7 +140,7 @@ The test execution will follow the following flow. To see or edit the default va
 
 Clean_up
 --------
-Go to the framework folder **PowerVC_Open_Source_Test_Suite** and run test suite like below:
+Go to the framework folder **powervc-pluggable-storage** and run test suite like below:
 
 `nohup python -u tests/smart_script.py <test suite file path> <configuration file path> &`
 
