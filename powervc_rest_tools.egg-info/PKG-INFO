@@ -1,0 +1,15 @@
+Metadata-Version: 1.1
+Name: powerVC_Open_Source_Test_Suite
+Version: 1.1
+Summary: PowerVC Storage Driver REST Testing tools
+Home-page:
+Author: IBM PowerVC SVT Team
+Author-email: rojajose@in.ibm.com
+License: 
+Description: The powerVC_Open_Source_Test_Suite REST Testing
+             tools provides the REST testing support to validate
+             powerVC storage drivers
+Platform: RHEL, Windows, Ubuntu
+Classifier: Operating System :: Windows :: Linux
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Environment :: PowerVC

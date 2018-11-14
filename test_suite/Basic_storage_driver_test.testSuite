@@ -1,0 +1,43 @@
+##############################################################################################################
+### This Test Suite use for powerVC Storage driver test                                                     ##  
+### Please comment the script using '#' if you don't want to run the script                                 ##
+### "Wait" tool can be used to add more wait time before running next script, eg: "Wait : 10m", "Wait : 2h" ##
+### Test Suite will stop run if any script fails                                                            ##
+### If you don't want to stop test suite even script fails use "skip" option                                ##
+##############################################################################################################
+
+#####################################################################
+####### All PowerVC configuration scripts are below ########
+#####################################################################
+
+###Creating compute template which can be used for Deploy and Resize 
+###Disk size should be greater or equal of image size
+test_create_compute_template.py : test_create_compute_templates
+
+###TTV validation before deploy run
+###If environment is not good Test Suite will stop run, you can fix the issue and rerun it
+pvc_ttv_validator.py
+
+### SCG based deploy, you can deploy any number of VMs
+### We added wait time since the VMs to get into OK state need max 50 minutes
+test_complex2_deploy_resize_delete_simple_SCG.py : test_1013_complex2_deploy
+wait : 20m
+
+###########################################
+######### Basic LifeCycle Test ############
+###########################################
+
+###This script will create concurrent volumes, it will use volume creation API
+pvc_create_volumes.py : test_1008_create_volumes
+
+###Concurrent Attach of Volumes
+pvc_host_based_conn_attach_volume.py : test_1001_attach_volume : skip
+
+###Active capture of servers
+pvc_host_based_Active_capture_off_servers.py : test_1001_capture_off_servers : skip
+
+###Active Resize of VMs, it will resize boot disk also into value we provided to resize compute template
+pvc_host_based_conn_Active_resize_new2.py : test_1009_active_resize_off_servers : skip
+
+###Concurrent detach of volumes from VMs
+pvc_host_based_conn_detach_volume.py : test_1001_detach_volume

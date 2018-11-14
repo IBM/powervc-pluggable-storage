@@ -1,0 +1,17 @@
+#############################################################################################################################################
+####### PowerVC clean_up scripts which is used to delete all VM, delete images & delete all volumes which are not started with "DND" ########
+#############################################################################################################################################
+####Run below scripts if you want to clean the set-up#####
+#############################################################################################################################################
+
+### Delete all VMs in powerVC
+pvc_conn_delete_all_vms.py : test_1001_con_delete_off_all_vms
+wait : 10m
+
+### Delete all images
+delete_all_images.py
+wait : 5m
+
+### Delete all volumes in powerVC, it will not delete volumes names which start with "DND"
+pvc_delete_volumes_except_volume_name_startwith_DND.py
+wait : 10m

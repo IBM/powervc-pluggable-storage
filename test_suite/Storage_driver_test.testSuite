@@ -1,0 +1,56 @@
+##############################################################################################################
+### This Test Suite use for powerVC Storage driver test                                                     ##  
+### Please comment the script using '#' if you don't want to run the script                                 ##
+### "Wait" tool can be used to add more wait time before running next script, eg: "Wait : 10m", "Wait : 2h" ##
+### Test Suite will stop run if any script fails                                                            ##
+### If you don't want to stop test suite even script fails use "skip" option                                ##
+##############################################################################################################
+
+#####################################################################
+####### All PowerVC configuration scripts are below ########
+#####################################################################
+
+###Creating compute template which can be used for Deploy and Resize 
+###Disk size should be greater or equal of image size
+test_create_compute_template.py : test_create_compute_templates : skip
+
+###TTV validation before deploy run
+###If environment is not good Test Suite will stop run, you can fix the issue and rerun it
+pvc_ttv_validator.py
+
+### SCG based deploy, you can deploy any number of VMs
+### We added wait time since the VMs to get into OK state need max 50 minutes
+test_complex2_deploy_resize_delete_simple_SCG.py : test_1013_complex2_deploy
+wait : 20m
+
+###########################################################################################
+######### LifeCycle scripts are below, most of them are storage related############
+############################################################################################
+
+###This script will create bulk volumes, it will use bulk volume creation API
+pvc_create_Bulkvolumes.py : test_1008_create_bulkvolumes
+
+###Bulk volume attach, it use bulk volume attach API
+pvc_host_based_bulk_volume_attach.py : test_1005_bulk_volume_attach
+
+###Concurrent detach of volumes from VMs
+pvc_host_based_conn_detach_volume.py : test_1001_detach_volume : skip
+
+### Unmanage Volumes from powerVC
+pvc_UnmanageVolumes.py : test_1021_unmanagevolumes
+
+###Active capture of servers
+pvc_host_based_Active_capture_off_servers.py : test_1001_capture_off_servers
+
+###Active Resize of VMs, it will resize boot disk also into value we provided to resize compute template
+pvc_host_based_conn_Active_resize_new2.py : test_1009_active_resize_off_servers : skip
+wait : 5m
+
+### Concurrent Migration of VMs from one host to another, comment this script if you have only one host
+test_selective_migration.py : test_1006_selective_migration : skip
+
+###This script will create bulk volumes and attach volumes into VMs
+pvc_bulk_create_attach.py : test_1008_create_and_attach_bulkvolumes : skip
+
+### Onbord volumes from storage, by default PowerVC not support manage volumes for pluggable storage driver.
+##pvc_OnboardVolumes.py : test_1020_onboardvolumes
