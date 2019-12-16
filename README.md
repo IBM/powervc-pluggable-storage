@@ -96,6 +96,15 @@ You can refer to the sample configuration file provided in the below path:
 
 powerVC_Open_Source_Test_Suite/config/Storage_driver_test.conf
 
+To run particular Script
+-----------------------
+python -u tests/scipt_you_want_to_run --test=test_you_want_to_run_from_config_file config/config_file
+
+Example:
+python -u tests/migration.py --test=test_1006_selective_migration config/Storage_driver_test.conf
+
+python -u tests/pvc_host_based_conn_capture_off_servers.py --test=test_1001_capture_off_servers config/Storage_driver_test.conf
+
 
 Test Suite file
 ---------------
