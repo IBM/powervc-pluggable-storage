@@ -14,7 +14,7 @@ import unittest
 from datetime import datetime
 from datetime import timedelta
 from rest_framework import svt_test_runner
-from tests_svt.Utils import DEFAULT_TIMEOUT_SECS, DEFAULT_SLEEP_INTERVAL_SECS
+from Utils import DEFAULT_TIMEOUT_SECS, DEFAULT_SLEEP_INTERVAL_SECS
 from rest_framework.svt_test_runner import SvtTesterContext
 
 from collections import namedtuple
