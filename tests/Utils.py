@@ -1,16 +1,8 @@
-"""
-  Copyright IBM Corp. 2018.
-  Licensed under the Apache License, Version 2.0 (the "License");
-  you may not use this file except in compliance with the License.
-  You may obtain a copy of the License at
-      http://www.apache.org/licenses/LICENSE-2.0
-  Unless required by applicable law or agreed to in writing, software
-  distributed under the License is distributed on an "AS IS" BASIS,
-  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  See the License for the specific language governing permissions and
-  limitations under the License.
-"""
+'''
+Created on Oct 11, 2013
 
+@author: djurgens
+'''
 from rest_framework import novaUtils
 from rest_framework import glanceUtils
 from rest_framework import quantumUtils
@@ -1007,6 +999,13 @@ def migrate_server(auth_id, novaUrl, server_dict):
     print "response=", responseTuple[0]
     return responseTuple
 
+def migrate_server_1(auth_id, novaUrl, server_dict, host):
+    actionProp = {
+                    'migrate': {"host": host }
+                    }
+    responseTuple = novaUtils.createServerAction(novaUrl, auth_id,
+                                                 server_dict['id'],
+                                                 actionProp)
 
 def live_migrate(auth_id, novaUrl, server, host):
     actionProps = {
@@ -1248,5 +1247,6 @@ def Report_Update_image(pathName, opName, total_Sucess, total_Failure, success_C
 ######################################################################################################
 #End of Report generation functions
 ######################################################################################################
+
 
 
