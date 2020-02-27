@@ -215,7 +215,7 @@ pvc_host_based_conn_start_servers.py : test_1001_host_Based_start_servers
             else:
                 return 1
         except:
-            return1
+            return 1
 if __name__ == '__main__':
     inst = SmartScript()
     inst.test_smart()
