@@ -183,3 +183,45 @@ eg:
 `ps -aux | grep smart`
 
 `kill -9 <process ID>`
+
+If you are seeing below ssl issue,please use workaround:
+export PYTHONHTTPSVERIFY=0;
+
+1)Fix ssl error 
+>>> IOError <<<
+Traceback (most recent call last):
+  File "/usr/lib/python2.7/site-packages/powerVC_Open_Source_Test_Suite-9.9.9.9-py2.7.egg/rest_framework/svt_test_runner.py", line 211, in main
+    _collect_authentication_response(configParser, config_section)
+  File "/usr/lib/python2.7/site-packages/powerVC_Open_Source_Test_Suite-9.9.9.9-py2.7.egg/rest_framework/svt_test_runner.py", line 94, in _collect_authentication_response
+    project),
+  File "/usr/lib/python2.7/site-packages/powerVC_Open_Source_Test_Suite-9.9.9.9-py2.7.egg/rest_framework/keystoneUtils.py", line 93, in authv3
+    return createToken(keystoneAddress, authProps)
+  File "/usr/lib/python2.7/site-packages/powerVC_Open_Source_Test_Suite-9.9.9.9-py2.7.egg/rest_framework/keystoneUtils.py", line 104, in createToken
+    respHeaders, resp = restUtils.postJSON2(address, url, postBody, headers)
+  File "/usr/lib/python2.7/site-packages/powerVC_Open_Source_Test_Suite-9.9.9.9-py2.7.egg/rest_framework/restUtils.py", line 131, in postJSON2
+    return request2('POST', address, url, headers, body)
+  File "/usr/lib/python2.7/site-packages/powerVC_Open_Source_Test_Suite-9.9.9.9-py2.7.egg/rest_framework/restUtils.py", line 78, in request2
+    conn.request(method, url, postBody, headers)
+  File "/usr/lib64/python2.7/httplib.py", line 1056, in request
+    self._send_request(method, url, body, headers)
+  File "/usr/lib64/python2.7/httplib.py", line 1090, in _send_request
+    self.endheaders(body)
+  File "/usr/lib64/python2.7/httplib.py", line 1052, in endheaders
+    self._send_output(message_body)
+  File "/usr/lib64/python2.7/httplib.py", line 890, in _send_output
+    self.send(msg)
+  File "/usr/lib64/python2.7/httplib.py", line 852, in send
+    self.connect()
+  File "/usr/lib64/python2.7/httplib.py", line 1275, in connect
+    server_hostname=sni_hostname)
+  File "/usr/lib64/python2.7/ssl.py", line 348, in wrap_socket
+    _context=self)
+  File "/usr/lib64/python2.7/ssl.py", line 609, in __init__
+    self.do_handshake()
+  File "/usr/lib64/python2.7/ssl.py", line 831, in do_handshake
+    self._sslobj.do_handshake()
+SSLError: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed (_ssl.c:618)
+:
+
+workaround:
+export PYTHONHTTPSVERIFY=0
