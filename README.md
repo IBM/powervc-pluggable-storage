@@ -183,3 +183,27 @@ eg:
 `ps -aux | grep smart`
 
 `kill -9 <process ID>`
+
+If you are seeing below ssl issue,please use workaround:
+
+Before running a script,Please run below command in your env
+export PYTHONHTTPSVERIFY=0;
+
+1)Fix ssl error 
+```
+>>> IOError <<
+    self.send(msg)
+  File "/usr/lib64/python2.7/httplib.py", line 852, in send
+    self.connect()
+  File "/usr/lib64/python2.7/httplib.py", line 1275, in connect
+    server_hostname=sni_hostname)
+  File "/usr/lib64/python2.7/ssl.py", line 348, in wrap_socket
+    _context=self)
+  File "/usr/lib64/python2.7/ssl.py", line 609, in __init__
+    self.do_handshake()
+  File "/usr/lib64/python2.7/ssl.py", line 831, in do_handshake
+    self._sslobj.do_handshake()
+SSLError: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed (_ssl.c:618)
+```
+workaround:
+export PYTHONHTTPSVERIFY=0
