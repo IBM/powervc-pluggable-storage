@@ -185,6 +185,8 @@ eg:
 `kill -9 <process ID>`
 
 If you are seeing below ssl issue,please use workaround:
+
+Before running a script,Please run below command in your env
 export PYTHONHTTPSVERIFY=0;
 
 1)Fix ssl error 
