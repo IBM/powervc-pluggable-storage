@@ -73,7 +73,7 @@ class SvtTesterBase(unittest.TestCase):
                                                     serviceCatalog,
                                                     self.config,
                                                     self.config_section))
-            print 'authent_id', authTokenId
+            print('authent_id', authTokenId)
         return self.svt_context.authent_id
 
     @property
@@ -180,7 +180,7 @@ class SvtTesterBase(unittest.TestCase):
         return self.getServiceUrl('ttv')
 
     def setUp(self):
-        print "TEST:", self.id()
+        print("TEST:", self.id())
 
     # Utility Methods
 
@@ -203,7 +203,7 @@ def main():
             svt_tester_class = clazz
             break
     if svt_tester_class is None:
-        print "No Tester (subclass of SvtTesterBase) found in module= ", \
-            str(calling_module.__name__)
+        print("No Tester (subclass of SvtTesterBase) found in module= ", \
+            str(calling_module.__name__))
     else:
         svt_test_runner.main(svt_tester_class)

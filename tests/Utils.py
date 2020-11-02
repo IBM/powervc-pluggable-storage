@@ -20,7 +20,7 @@ import os
 try:
     import ipaddr
 except ImportError:
-    print "pip install ipaddr (for install ipaddr to do IPV6 test)"
+    print("pip install ipaddr (for install ipaddr to do IPV6 test)")
 
 DEFAULT_SLEEP_INTERVAL_SECS = 3
 DEFAULT_TIMEOUT_SECS = 180
@@ -31,31 +31,28 @@ def find_all_VMs(self, novaUrl, authent_id):
         serverListResponse, serverList = \
             novaUtils.listServerSummaries(novaUrl, authent_id)
         return serverList
-    except HttpError, e:
-        print 'HTTP Error: {0}'.format(e.body)
+    except HttpError as e:
+        print('HTTP Error: {0}'.format(e.body))
         raise e
 
 
 def delete_server(authTokenId, novaUrl, server):
     try:
         novaUtils.deleteServer(novaUrl, authTokenId, server['id'])
-    except HttpError, e:
-        print 'Http Error {0}'.format(e.body)
+    except HttpError as e:
+        print('Http Error {0}'.format(e.body))
 
 def host_maintenence(auth_id, novaUrl, server, actionProps):
-	print 'ENTER Utils:host_maintenence'
-	response, body = novaUtils.host_maintenence_mode(novaUrl, auth_id, server, actionProps)
+    print('ENTER Utils:host_maintenence')
+    response, body = novaUtils.host_maintenence_mode(novaUrl, auth_id, server, actionProps)
 def remote_restart_by_host(auth_id, novaUrl, server, actionProps):
-	print 'ENTER Utils:remote_restart_by_host'
-	response, body = novaUtils.remote_restart_host(novaUrl, auth_id, server, actionProps)
+    print('ENTER Utils:remote_restart_by_host')
+    response, body = novaUtils.remote_restart_host(novaUrl, auth_id, server, actionProps)
 def remote_restart_by_server(auth_id, novaUrl, server, actionProps):
-	try:
-		print 'ENTER Utils:remote_restart_by_server'
-		response, body = novaUtils.remote_restart_server(novaUrl, auth_id, server, actionProps)
-		print  "Response", response
-		print "Body", body
-    	except HttpError, e:
-        	print 'Http Error {0}'.format(e.body)
+    try:
+        response, body = novaUtils.remote_restart_server(novaUrl, auth_id, server, actionProps)
+    except HttpError as e:
+        print('Http Error {0}'.format(e.body))
 
 
 def start_server(authTokenId, novaUrl, server,
@@ -121,23 +118,23 @@ def get_server_status_dict(authTokenId, novaUrl, server):
             if responseTuple and responseTuple[1] and\
                 'server' in responseTuple[1]:
                 break
-        except ssl.SSLError, e:
+        except ssl.SSLError as e:
             time.sleep(1)
             if i == 4:
-                print 'SSLError: {0}'.format(e)
+                print('SSLError: {0}'.format(e))
                 raise e
-        except HttpError, e:
+        except HttpError as e:
             if e.code == 404:
                 raise e
             else:
                 if i == 4:
-                    print '{0}'.format(e)
+                    print('{0}'.format(e))
                     raise e
                 else:
                     continue
         except Exception as err:
             if i == 4:
-                print '{0}'.format(err)
+                print('{0}'.format(err))
                 raise err
     servDetail = None
     if responseTuple[1] and 'server' in responseTuple[1]:
@@ -173,23 +170,23 @@ def get_server_host_status_dict(authTokenId, novaUrl, server):
             if responseTuple and responseTuple[1] and\
                 'server' in responseTuple[1]:
                 break
-        except ssl.SSLError, e:
+        except ssl.SSLError as e:
             time.sleep(1)
             if i == 4:
-                print 'SSLError: {0}'.format(e)
+                print('SSLError: {0}'.format(e))
                 raise e
-        except HttpError, e:
+        except HttpError as e:
             if e.code == 404:
                 raise e
             else:
                 if i == 4:
-                    print '{0}'.format(e)
+                    print('{0}'.format(e))
                     raise e
                 else:
                     continue
         except Exception as err:
             if i == 4:
-                print '{0}'.format(err)
+                print('{0}'.format(err))
                 raise err
     servDetail = None
     if responseTuple[1] and 'server' in responseTuple[1]:
@@ -227,23 +224,23 @@ def get_server_status_dict_host(authTokenId, novaUrl, server, host_id):
             if responseTuple and responseTuple[1] and\
                 'server' in responseTuple[1]:
                 break
-        except ssl.SSLError, e:
+        except ssl.SSLError as e:
             time.sleep(1)
             if i == 4:
-                print 'SSLError: {0}'.format(e)
+                print('SSLError: {0}'.format(e))
                 raise e
-        except HttpError, e:
+        except HttpError as e:
             if e.code == 404:
                 raise e
             else:
                 if i == 4:
-                    print '{0}'.format(e)
+                    print('{0}'.format(e))
                     raise e
                 else:
                     continue
         except Exception as err:
             if i == 4:
-                print '{0}'.format(err)
+                print('{0}'.format(err))
                 raise err
     servDetail = None
     if responseTuple[1] and 'server' in responseTuple[1]:
@@ -256,7 +253,7 @@ def get_server_status_dict_host(authTokenId, novaUrl, server, host_id):
         serverStatus['power_state'] = servDetail['OS-EXT-STS:power_state']
     if servDetail and 'OS-EXT-SRV-ATTR:host' in servDetail:
         serverStatus['host'] = servDetail['OS-EXT-SRV-ATTR:host']
-    print servDetail;
+    print(servDetail);
     if servDetail and 'health_status' in servDetail:
         if servDetail['health_status'].get("health_value"):
             serverStatus['health_value'] = \
@@ -266,15 +263,15 @@ def get_server_status_dict_host(authTokenId, novaUrl, server, host_id):
     return serverStatus
 
 def get_host_list(authTokenId, novaUrl):
-    print 'Running novaUtils.listHosts'
+    print('Running novaUtils.listHosts')
     for i in range(5):
         try:
             responseTuple = novaUtils.listHypervisorDetails(novaUrl, authTokenId)
             if responseTuple and responseTuple[1] and\
                 'hypervisors' in responseTuple[1]:
                 break
-        except ssl.SSLError, e:
-            print 'SSLError: {0}'.format(e)
+        except ssl.SSLError as e:
+            print('SSLError: {0}'.format(e))
             time.sleep(1)
             if i == 4:
                 raise
@@ -292,8 +289,8 @@ def get_host_status(authTokenId, novaUrl, host_name):
             if responseTuple and responseTuple[1] and\
                 'hypervisors' in responseTuple[1]:
                 break
-        except ssl.SSLError, e:
-            print 'SSLError: {0}'.format(e)
+        except ssl.SSLError as e:
+            print('SSLError: {0}'.format(e))
             time.sleep(1)
             if i == 4:
                 raise
@@ -301,12 +298,12 @@ def get_host_status(authTokenId, novaUrl, host_name):
     if responseTuple[1] and 'hypervisors' in responseTuple[1]:
         hypDetail = responseTuple[1]['hypervisors']
     for hdetail in hypDetail:
-	if hdetail['hypervisor_hostname'] == host_name:
-		hostStatus['hypervisor_hostname'] = hdetail['hypervisor_hostname']
-		hostStatus['status'] = hdetail['status']
-		hostStatus['state'] = hdetail['state']
-		hostStatus['maintenance_migrate_action'] = hdetail['maintenance_migrate_action']
-    return hostStatus
+        if hdetail['hypervisor_hostname'] == host_name:
+            hostStatus['hypervisor_hostname'] = hdetail['hypervisor_hostname']
+            hostStatus['status'] = hdetail['status']
+            hostStatus['state'] = hdetail['state']
+            hostStatus['maintenance_migrate_action'] = hdetail['maintenance_migrate_action']
+        return hostStatus
 
 def get_server_state(authTokenId, novaUrl, server, state_type='vm_state'):
     """Returns the value of the server's state for the given state-type.
@@ -320,8 +317,8 @@ def get_server_state(authTokenId, novaUrl, server, state_type='vm_state'):
                 novaUtils.showServer(novaUrl, authTokenId, server['id'])
             if response and body:
                 break
-        except ssl.SSLError, e:
-            print 'SSLError: {0}'.format(e.body)
+        except ssl.SSLError as e:
+            print('SSLError: {0}'.format(e.body))
             time.sleep(1)
             if i == 4:
                 raise
@@ -343,8 +340,8 @@ def get_server_state_and_health(token, novaUrl, server, state_type='vm_state'):
                 novaUtils.showServer(novaUrl, token, server['id'])
             if response and body:
                 break
-        except ssl.SSLError, e:
-            print 'SSLError: {0}'.format(e)
+        except ssl.SSLError as e:
+            print('SSLError: {0}'.format(e))
             time.sleep(1)
             if i == 4:
                 raise e
@@ -362,8 +359,8 @@ def get_migration_status(token, novaUrl, server, from_host, to_host):
                 novaUtils.showServer(novaUrl, token, server['id'])
             if response and body:
                 break
-        except ssl.SSLError, e:
-            print 'SSLError: {0}'.format(e.body)
+        except ssl.SSLError as e:
+            print('SSLError: {0}'.format(e.body))
             time.sleep(1)
             if i == 4:
                 raise e
@@ -375,7 +372,7 @@ def get_migration_status(token, novaUrl, server, from_host, to_host):
         power_state = server['OS-EXT-STS:power_state']
         host = server['OS-EXT-SRV-ATTR:host']
         health = server['health_status']['health_value']
-        print trace.format(vm_state, task_state, power_state, host, health)
+        print(trace.format(vm_state, task_state, power_state, host, health))
         if vm_state == 'error':
             return 'error'
         elif task_state == None:
@@ -402,7 +399,7 @@ def wait_for_server_state(authTokenId, novaUrl, server, state, timeout,
         time.sleep(sleep_interval)
         serverState = get_server_state(authTokenId, novaUrl, server,
                                        state_type)
-        print '---Server={0}, State={1}'.format(server['name'], serverState)
+        print('---Server={0}, State={1}'.format(server['name'], serverState))
         if serverState == state:
             return True
         elif serverState == 'error':
@@ -475,10 +472,10 @@ def get_image(cls, tester, name):
         glanceUtils.listImages(glanceUrl, authTokenId)
 
     for image in listImagesResponseBodyJSON['images']:
-        print 'image name=', image['name']
+        print('image name=', image['name'])
         if image['name'] == name:
             imageRef = image['id']
-            print 'Image for {0} found: {1}'.format(name, imageRef)
+            print('Image for {0} found: {1}'.format(name, imageRef))
     return imageRef
 
 
@@ -522,8 +519,8 @@ def stop_all_servers(authTokenId, novaUrl, server_list, timeout=None,
                                  sleep_interval)
             if result:
                 count += 1
-        except HttpError, err:
-            print 'HTTP Error: {0}'.format(err.body)
+        except HttpError as err:
+            print('HTTP Error: {0}'.format(err.body))
     return count
 
 
@@ -536,8 +533,8 @@ def start_all_servers(authTokenId, novaUrl, server_list, timeout=None,
                                   sleep_interval)
             if result:
                 count += 1
-        except HttpError, err:
-            print 'HTTP Error: {0}'.format(err.body)
+        except HttpError as err:
+            print('HTTP Error: {0}'.format(err.body))
     return count
 
 
@@ -595,7 +592,7 @@ def create_vscsi_scg(authent_id, novaUrl, viosid, scgName, bdConnect):
                     "boot_connectivity": [bdc],
                     "data_connectivity": [bdc]
                 }
-    print scg_props
+    print(scg_props)
     scg_response, scg_dict = novaUtils.createSCGs(novaUrl, authent_id, scg_props)
     return scg_response
 
@@ -617,7 +614,7 @@ def create_npiv_scg(authent_id, novaUrl, viosid, scgName, bdConnect):
                     "boot_connectivity": [boot_data],
                     "data_connectivity": [boot_data]
                 }
-    print scg_props
+    print(scg_props)
     scg_response, scg_dict = novaUtils.createSCGs(novaUrl, authent_id, scg_props)
     return scg_response
 
@@ -639,7 +636,7 @@ def generate_npiv_scg(authent_id, novaUrl, viosid, scgName, bdConnect, ddConnect
                     "boot_connectivity": [boot_data],
                     "data_connectivity": [data_disk]
                 }
-    print scg_props
+    print(scg_props)
     scg_response, scg_dict = novaUtils.createSCGs(novaUrl, authent_id, scg_props)
     return scg_response
 
@@ -660,7 +657,7 @@ def generate_vscsi_scg(authent_id, novaUrl, viosid, scgName, bd_Connect,dd_Conne
                     "boot_connectivity": [bdc],
                     "data_connectivity": [ddc]
                 }
-    print scg_props
+    print(scg_props)
     scg_response, scg_dict = novaUtils.createSCGs(novaUrl, authent_id, scg_props)
     return scg_response
 
@@ -684,7 +681,7 @@ def generate_vscsi_npiv_scg(authent_id, novaUrl, viosid, scgName, bd_Connect,dd_
                     "boot_connectivity": [bdc],
                     "data_connectivity": [ddc]
                 }
-    print scg_props
+    print(scg_props)
     scg_response, scg_dict = novaUtils.createSCGs(novaUrl, authent_id, scg_props)
     return scg_response
 
@@ -728,7 +725,7 @@ def create_server_with_key(authTokenId, novaUrl, imageRef, name, ip, network_id,
 
 def create_server_sriov(authTokenId, novaUrl, neutronUrl, imageRef, name, ip, network_id, sriov_capacity, sriov_vnic_required_vfs,
                   flavor_id=2, host_name=None):
-    print novaUrl
+    print(novaUrl)
     sriov_port_Props = {
                  "name":"powervc_attached",
                  "network_id": network_id,
@@ -739,7 +736,7 @@ def create_server_sriov(authTokenId, novaUrl, neutronUrl, imageRef, name, ip, ne
 
     response, bodyJSON = \
         quantumUtils.createSriovPorts(neutronUrl, authTokenId, sriov_port_Props)
-    print bodyJSON['port']['id']
+    print(bodyJSON['port']['id'])
     sriov_port = bodyJSON['port']['id']
 
     vm_entry = {
@@ -769,7 +766,6 @@ def create_server_sriov(authTokenId, novaUrl, neutronUrl, imageRef, name, ip, ne
 """ new create_server module for deploying multidisk VMS """
 def create_server_md(authTokenId, novaUrl, imageRef, name, ip, network_id,block_device_mapping_list,
                   host_aggregate_id, collocation_rule_id, flavor_id=2, host_name=None ):
-    print "entering create_server_md"
     server_name = name
     vm_entry = {
                 "name": server_name,
@@ -820,7 +816,7 @@ def get_named_network_id(authTokenId, quantumUrl, network_name):
     response, bodyJSON = quantumUtils.listNetworks(quantumUrl, authTokenId)
     for network in bodyJSON['networks']:
         if network['name'] == network_name:
-            print 'network=', network
+            print('network=', network)
             networkId = network['id']
     return networkId
 
@@ -920,7 +916,6 @@ def increment_ip(ip_list, netmask_list, incr):
 
 def next_ip6(start_ip, incr):
     a = ipaddr.IPv6Address(start_ip)
-    print a + incr
     return a + incr
 
 def ip6_as_list(ip):
@@ -947,15 +942,15 @@ def unique_server_name_ip6(name_prefix, ip_address):
     if not ip_address:
         return None
     a = ipaddr.IPv6Address(ip_address)
-    print a
+    print(a)
     b = str(a)
-    print b
+    print(b)
     ip_octet_list = b.split(':', 8)
-    print ip_octet_list
+    print(ip_octet_list)
     for i in range(len(ip_octet_list)):
         #ip_octet_list[i] = ip_octet_list[i].zfill(7)
         suffix_list = ip_octet_list[7]
-        print suffix_list
+        print(suffix_list)
         unique_name = name_prefix + '_' + string.join(suffix_list, '_')
     return unique_name
 
@@ -966,10 +961,10 @@ def unique_server_name_ip6(name_prefix, ip_address):
 
 def finish_onboard(authid, novaUrl, serverid, os_distro, vm_boot_vol_ids_list, endianness):
 
-    print "\n Entering the Utils.finish_onboard method...."
-    print " ]n os_distro is : ", os_distro
-    print " \n vm_boot_vol_ids_list is : ", vm_boot_vol_ids_list
-    print " \n endianness is : " , endianness
+    print("\n Entering the Utils.finish_onboard method....")
+    print(" ]n os_distro is : ", os_distro)
+    print(" \n vm_boot_vol_ids_list is : ", vm_boot_vol_ids_list)
+    print(" \n endianness is : " , endianness)
 
 
     actionProp = { "finishOnboard": {
@@ -984,7 +979,7 @@ def finish_onboard(authid, novaUrl, serverid, os_distro, vm_boot_vol_ids_list, e
     responseTuple= novaUtils.createServerAction(novaUrl, authid,
                                                  serverid,
                                                  actionProp)
-    print "response=", responseTuple[0]
+    print("response=", responseTuple[0])
     return responseTuple
 
 
@@ -996,7 +991,7 @@ def migrate_server(auth_id, novaUrl, server_dict):
     responseTuple = novaUtils.createServerAction(novaUrl, auth_id,
                                                  server_dict['id'],
                                                  actionProp)
-    print "response=", responseTuple[0]
+    print("response=", responseTuple[0])
     return responseTuple
 
 def migrate_server_1(auth_id, novaUrl, server_dict, host):
@@ -1027,7 +1022,7 @@ def force_delete_server(auth_id, novaUrl, server):
 
 
 def resize_server(auth_id, novaUrl, server, new_flavor):
-    print 'Resize {0} to flavor {1}'.format(server['name'], new_flavor)
+    print('Resize {0} to flavor {1}'.format(server['name'], new_flavor))
     actionProps = {
                    "resize": {"flavorRef": new_flavor}
                    }
@@ -1037,22 +1032,22 @@ def resize_server(auth_id, novaUrl, server, new_flavor):
 def resize_server_new(auth_id, novaUrl, name, id, vcpu, ram, proc_units, disk):
 
     actionProps = { "resize": {"flavor":{"vcpus": vcpu,"ram":ram,"extra_specs":{"powervm:proc_units": proc_units},"disk":disk}}}
-    print "printing action props"
-    print actionProps
+    print("printing action props")
+    print(actionProps)
     novaUtils.createServerAction(novaUrl, auth_id, id, actionProps)
 
 
 def isbootvolume(cinderUrl, token, volume_id):
     responseDict={}
     responseDict = cinderUtils.showVolume(cinderUrl,token,volume_id)[1]
-    print "\n response dict: ,", responseDict
+    print("\n response dict: ,", responseDict)
     volume_detail_dict = responseDict['volume']
-    print "\n volume_detail_dict: ,", volume_detail_dict
+    print("\n volume_detail_dict: ,", volume_detail_dict)
     if volume_detail_dict['metadata'].has_key('is_boot_volume'):
-        print "returning True"
+        print("returning True")
         return True
     else:
-        print "returning False"
+        print("returning False")
         return False
 
 
@@ -1061,15 +1056,15 @@ def isbootvolume(cinderUrl, token, volume_id):
 ########################################################################################################
 def Create_Status_File(FileName):
      path = os.getcwd() + '/' + 'SVT_Reports' + '/' + FileName
-     print path
+     print(path)
      if not os.path.exists(path):
         path2 = os.getcwd() + '/' + 'SVT_Reports'
-        print path2
+        print(path2)
         if not os.path.exists(path2):
             os.makedirs(path2)
         os.makedirs(path)
      filenm = path + '/' + FileName + '-' + datetime.now().strftime("day_%Y-%m-%d__time_%H-%M") + '.' + 'txt'
-     print filenm
+     print(filenm)
      open(filenm,'w')
      return filenm
 
@@ -1129,8 +1124,8 @@ def FailedVM_update(failed_VM, server, authTokenId, novaUrl):
                                              server['id'])
         servStatus = get_server_status_dict(authTokenId,
                                                       novaUrl, server)
-    except HttpError, e:
-            print 'HTTP Error: {0}'.format(e.body)
+    except HttpError as e:
+            print('HTTP Error: {0}'.format(e.body))
             exit(1)
     try:
         failed_VM.append("Name:")

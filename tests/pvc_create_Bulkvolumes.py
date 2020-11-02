@@ -14,7 +14,7 @@ from rest_framework import novaUtils
 from rest_framework import cinderUtils
 from rest_framework.restUtils import HttpError
 import time
-import Utils
+from rest_framework import Utils
 from datetime import datetime
 import os
 
@@ -57,28 +57,28 @@ class SvtVolumeTester(svt_tester_base.SvtTesterBase):
         options_missing = False
         for option in self.required_options:
             if not self.config.has_option(self.config_section, option):
-                print 'option=', option, 'not found in configuration file'
+                print('option=', option, 'not found in configuration file')
                 options_missing = True
         if options_missing:
-            print 'Provide missing options to the configuration file.'
+            print('Provide missing options to the configuration file.')
             os._exit(1)
 
 
 
         vol_name_prefix = self.config_get(VOL_NAME_PREFIX)
-        print VOL_NAME_PREFIX, vol_name_prefix
+        print(VOL_NAME_PREFIX, vol_name_prefix)
 
         vol_multiattach = self.config_get(VOL_MULTIATTACH)
-        print VOL_MULTIATTACH, vol_multiattach
+        print(VOL_MULTIATTACH, vol_multiattach)
 
         vol_count = self.config_get(VOL_COUNT)
-        print VOL_COUNT, vol_count
+        print(VOL_COUNT, vol_count)
 
         vol_type = self.config_get(VOL_TYPE)
-        print VOL_TYPE, vol_type
+        print(VOL_TYPE, vol_type)
 
         vol_size = self.config_get(VOL_SIZE)
-        print VOL_SIZE, vol_size
+        print(VOL_SIZE, vol_size)
         self.main_function(vol_name_prefix, vol_multiattach, vol_count, vol_type, vol_size)
 
     def main_function (self, vol_name_prefix, vol_multiattach, vol_count, vol_type, vol_size):
@@ -95,16 +95,16 @@ class SvtVolumeTester(svt_tester_base.SvtTesterBase):
         cinderUrl = self.getServiceUrl('volume')
         try:
             _, volumeType = cinderUtils.listVolumeTypes(cinderUrl, self.authent_id)
-        except HttpError, e:
-            print 'HTTP Error: {0}'.format(e.body)
+        except HttpError as e:
+            print('HTTP Error: {0}'.format(e.body))
             os._exit(1)
 
         if volumeType:
             volumeTypeList = volumeType['volume_types']
         if volumeTypeList:
             for voltype in volumeTypeList:
-                print 'name=', voltype['name']
-                print 'id=', voltype['id']
+                print('name=', voltype['name'])
+                print('id=', voltype['id'])
         filePath = Utils.Create_Status_File("Create_Volumes")
         Utils.Overwrite_File(filePath, "Create_Volumes")
         volumeProps = {
@@ -118,14 +118,14 @@ class SvtVolumeTester(svt_tester_base.SvtTesterBase):
                     "count": vol_count
         }
 
-        print volumeProps
+        print(volumeProps)
 
         try:
             _, volumesDict = cinderUtils.createBulkVolume(cinderUrl,
                                                            self.authent_id,
                                                            volumeProps)
-        except HttpError, e:
-            print 'HTTP Error: {0}'.format(e.body)
+        except HttpError as e:
+            print('HTTP Error: {0}'.format(e.body))
             os._exit(1)
 
 if __name__ == '__main__':

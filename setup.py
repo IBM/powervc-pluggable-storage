@@ -19,7 +19,7 @@ setup(
 
     # the name of the top-level package. Must match the directory name on the
     # filesystem
-    name='powerVC_Open_Source_Test_Suite',
+    name='powerVC_Open_Source_Test_Suite_1',
 
     # ENV variables for each package will be set during the build. Work with
     # build team to ensure they are set for your package.
@@ -31,7 +31,7 @@ setup(
     author="IBM PowerVC Team",
     author_email=None,       # looking for an external email address still....
 
-    platforms='RHEL 7.3',
+    platforms='RHEL 8.2',
 
     license='Apache License',
 
@@ -47,8 +47,7 @@ setup(
     # https://pypi.python.org/pypi?%3Aaction=list_classifiers
     classifiers=[
         'Operating System :: POSIX :: Linux',
-        'Programming Language :: Python :: 2.6',
-        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3.6.8',
         'Environment :: Openstack'
     ]
 

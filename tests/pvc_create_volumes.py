@@ -15,7 +15,7 @@ from rest_framework import novaUtils
 from rest_framework import cinderUtils
 from rest_framework.restUtils import HttpError
 import time
-import Utils
+from rest_framework import Utils
 from datetime import datetime
 import os
 
@@ -51,130 +51,130 @@ class SvtVolumeTester(svt_tester_base.SvtTesterBase):
         options_missing = False
         for option in self.required_options:
             if not self.config.has_option(self.config_section, option):
-                print 'option=', option, 'not found in configuration file'
+                print('option=', option, 'not found in configuration file')
                 options_missing = True
         if options_missing:
-            print 'Provide missing options to the configuration file.'
+            print('Provide missing options to the configuration file.')
             os._exit(1)
 
         vol_name_prefix = self.config_get(VOL_NAME_PREFIX)
-        print VOL_NAME_PREFIX, vol_name_prefix
+        print(VOL_NAME_PREFIX, vol_name_prefix)
 
         vol_start_index = self.config_get(VOL_START_INDEX)
-        print VOL_START_INDEX, vol_start_index
+        print(VOL_START_INDEX, vol_start_index)
 
         vol_count = self.config_get(VOL_COUNT)
-        print VOL_COUNT, vol_count
+        print(VOL_COUNT, vol_count)
 
         vol_type = self.config_get(VOL_TYPE)
-        print VOL_TYPE, vol_type
+        print(VOL_TYPE, vol_type)
 
         vol_size = self.config_get(VOL_SIZE)
-        print VOL_SIZE, vol_size
+        print(VOL_SIZE, vol_size)
         self.main_function(vol_name_prefix, vol_start_index, vol_count, vol_type, vol_size)
 
     def test_1008_create_volumes2(self):
         options_missing = False
         for option in self.required_options:
             if not self.config.has_option(self.config_section, option):
-                print 'option=', option, 'not found in configuration file'
+                print('option=', option, 'not found in configuration file')
                 options_missing = True
         if options_missing:
-            print 'Provide missing options to the configuration file.'
+            print('Provide missing options to the configuration file.')
             os._exit(1)
 
         vol_name_prefix = self.config_get(VOL_NAME_PREFIX)
-        print VOL_NAME_PREFIX, vol_name_prefix
+        print(VOL_NAME_PREFIX, vol_name_prefix)
 
         vol_start_index = self.config_get(VOL_START_INDEX)
-        print VOL_START_INDEX, vol_start_index
+        print(VOL_START_INDEX, vol_start_index)
 
         vol_count = self.config_get(VOL_COUNT)
-        print VOL_COUNT, vol_count
+        print(VOL_COUNT, vol_count)
 
         vol_type = self.config_get(VOL_TYPE)
-        print VOL_TYPE, vol_type
+        print(VOL_TYPE, vol_type)
 
         vol_size = self.config_get(VOL_SIZE)
-        print VOL_SIZE, vol_size
+        print(VOL_SIZE, vol_size)
         self.main_function(vol_name_prefix, vol_start_index, vol_count, vol_type, vol_size)
 
     def test_1008_create_volumes3(self):
         options_missing = False
         for option in self.required_options:
             if not self.config.has_option(self.config_section, option):
-                print 'option=', option, 'not found in configuration file'
+                print('option=', option, 'not found in configuration file')
                 options_missing = True
         if options_missing:
-            print 'Provide missing options to the configuration file.'
+            print('Provide missing options to the configuration file.')
             os._exit(1)
 
         vol_name_prefix = self.config_get(VOL_NAME_PREFIX)
-        print VOL_NAME_PREFIX, vol_name_prefix
+        print(VOL_NAME_PREFIX, vol_name_prefix)
 
         vol_start_index = self.config_get(VOL_START_INDEX)
-        print VOL_START_INDEX, vol_start_index
+        print(VOL_START_INDEX, vol_start_index)
 
         vol_count = self.config_get(VOL_COUNT)
-        print VOL_COUNT, vol_count
+        print(VOL_COUNT, vol_count)
 
         vol_type = self.config_get(VOL_TYPE)
-        print VOL_TYPE, vol_type
+        print(VOL_TYPE, vol_type)
 
         vol_size = self.config_get(VOL_SIZE)
-        print VOL_SIZE, vol_size
+        print(VOL_SIZE, vol_size)
         self.main_function(vol_name_prefix, vol_start_index, vol_count, vol_type, vol_size)
 
     def test_1008_create_volumes4(self):
         options_missing = False
         for option in self.required_options:
             if not self.config.has_option(self.config_section, option):
-                print 'option=', option, 'not found in configuration file'
+                print('option=', option, 'not found in configuration file')
                 options_missing = True
         if options_missing:
-            print 'Provide missing options to the configuration file.'
+            print('Provide missing options to the configuration file.')
             os._exit(1)
 
         vol_name_prefix = self.config_get(VOL_NAME_PREFIX)
-        print VOL_NAME_PREFIX, vol_name_prefix
+        print(VOL_NAME_PREFIX, vol_name_prefix)
 
         vol_start_index = self.config_get(VOL_START_INDEX)
-        print VOL_START_INDEX, vol_start_index
+        print(VOL_START_INDEX, vol_start_index)
 
         vol_count = self.config_get(VOL_COUNT)
-        print VOL_COUNT, vol_count
+        print(VOL_COUNT, vol_count)
 
         vol_type = self.config_get(VOL_TYPE)
-        print VOL_TYPE, vol_type
+        print(VOL_TYPE, vol_type)
 
         vol_size = self.config_get(VOL_SIZE)
-        print VOL_SIZE, vol_size
+        print(VOL_SIZE, vol_size)
         self.main_function(vol_name_prefix, vol_start_index, vol_count, vol_type, vol_size)
 
     def test_1008_create_volumes5(self):
         options_missing = False
         for option in self.required_options:
             if not self.config.has_option(self.config_section, option):
-                print 'option=', option, 'not found in configuration file'
+                print('option=', option, 'not found in configuration file')
                 options_missing = True
         if options_missing:
-            print 'Provide missing options to the configuration file.'
+            print('Provide missing options to the configuration file.')
             os._exit(1)
 
         vol_name_prefix = self.config_get(VOL_NAME_PREFIX)
-        print VOL_NAME_PREFIX, vol_name_prefix
+        print(VOL_NAME_PREFIX, vol_name_prefix)
 
         vol_start_index = self.config_get(VOL_START_INDEX)
-        print VOL_START_INDEX, vol_start_index
+        print(VOL_START_INDEX, vol_start_index)
 
         vol_count = self.config_get(VOL_COUNT)
-        print VOL_COUNT, vol_count
+        print(VOL_COUNT, vol_count)
 
         vol_type = self.config_get(VOL_TYPE)
-        print VOL_TYPE, vol_type
+        print(VOL_TYPE, vol_type)
 
         vol_size = self.config_get(VOL_SIZE)
-        print VOL_SIZE, vol_size
+        print(VOL_SIZE, vol_size)
         self.main_function(vol_name_prefix, vol_start_index, vol_count, vol_type, vol_size)
 
 
@@ -182,10 +182,10 @@ class SvtVolumeTester(svt_tester_base.SvtTesterBase):
         options_missing = False
         for option in self.required_options:
             if not self.config.has_option(self.config_section, option):
-                print 'option=', option, 'not found in configuration file'
+                print('option=', option, 'not found in configuration file')
                 options_missing = True
         if options_missing:
-            print 'Provide missing options to the configuration file.'
+            print('Provide missing options to the configuration file.')
             os._exit(1)
 
         #svc_addr = self.config_get(SVC_ADDR)
@@ -204,19 +204,19 @@ class SvtVolumeTester(svt_tester_base.SvtTesterBase):
         #print HOST_NAME, host_name
 
         vol_name_prefix = self.config_get(VOL_NAME_PREFIX)
-        print VOL_NAME_PREFIX, vol_name_prefix
+        print(VOL_NAME_PREFIX, vol_name_prefix)
 
         vol_start_index = self.config_get(VOL_START_INDEX)
-        print VOL_START_INDEX, vol_start_index
+        print(VOL_START_INDEX, vol_start_index)
 
         vol_count = self.config_get(VOL_COUNT)
-        print VOL_COUNT, vol_count
+        print(VOL_COUNT, vol_count)
 
         vol_type = self.config_get(VOL_TYPE)
-        print VOL_TYPE, vol_type
+        print(VOL_TYPE, vol_type)
 
         vol_size = self.config_get(VOL_SIZE)
-        print VOL_SIZE, vol_size
+        print(VOL_SIZE, vol_size)
         self.main_function(vol_name_prefix, vol_start_index, vol_count, vol_type, vol_size)
 
     def main_function (self, vol_name_prefix, vol_start_index, vol_count, vol_type, vol_size):
@@ -233,16 +233,16 @@ class SvtVolumeTester(svt_tester_base.SvtTesterBase):
         cinderUrl = self.getServiceUrl('volume')
         try:
             _, volumeType = cinderUtils.listVolumeTypes(cinderUrl, self.authent_id)
-        except HttpError, e:
-            print 'HTTP Error: {0}'.format(e.body)
+        except HttpError as e:
+            print('HTTP Error: {0}'.format(e.body))
             os._exit(1)
 
         if volumeType:
             volumeTypeList = volumeType['volume_types']
         if volumeTypeList:
             for voltype in volumeTypeList:
-                print 'name=', voltype['name']
-                print 'id=', voltype['id']
+                print('name=', voltype['name'])
+                print('id=', voltype['id'])
         filePath = Utils.Create_Status_File("Create_Volumes")
         Utils.Overwrite_File(filePath, "Create_Volumes")
         while vol_start_index < vol_count:
@@ -253,7 +253,7 @@ class SvtVolumeTester(svt_tester_base.SvtTesterBase):
                            "display_description": "SVT Volumes",
                            "volume_type": vol_type
             }
-            print volumeProps
+            print(volumeProps)
 
             try:
                 _, volumesDict = cinderUtils.createVolume(cinderUrl,
@@ -261,9 +261,9 @@ class SvtVolumeTester(svt_tester_base.SvtTesterBase):
                                                            volumeProps)
                 if volumesDict:
                     volume=volumesDict.get('volume')
-                    print 'Printing Volume=', volume
+                    print('Printing Volume=', volume)
                     #print 'name=', volume['display_name']
-                    print 'id=', volume['id']
+                    print('id=', volume['id'])
                     success_V.append(str(vol_name))
                     success_V.append("\n")
                     total_Success = total_Success + 1
@@ -274,8 +274,8 @@ class SvtVolumeTester(svt_tester_base.SvtTesterBase):
                 Utils.Report_Update_volumes(filePath, "Create_Volume", total_Success, total_failure, success_V, failed_V)
                 vol_start_index = vol_start_index + 1
                 time.sleep(5)
-            except HttpError, e:
-                print 'HTTP Error: {0}'.format(e.body)
+            except HttpError as e:
+                print('HTTP Error: {0}'.format(e.body))
                 os._exit(1)
 
 if __name__ == '__main__':

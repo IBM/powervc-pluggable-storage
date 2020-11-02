@@ -14,7 +14,7 @@ from rest_framework import novaUtils
 from rest_framework import cinderUtils
 from rest_framework.restUtils import HttpError
 import time
-import Utils
+from rest_framework import Utils
 from datetime import datetime
 import os
 
@@ -41,23 +41,23 @@ class SvtVolumeTester(svt_tester_base.SvtTesterBase):
         options_missing = False
         for option in self.required_options:
             if not self.config.has_option(self.config_section, option):
-                print 'option=', option, 'not found in configuration file'
+                print('option=', option, 'not found in configuration file')
                 options_missing = True
         if options_missing:
-            print 'Provide missing options to the configuration file.'
+            print('Provide missing options to the configuration file.')
             os._exit(1)
 
 
         vol_name_prefix = self.config_get(VOL_NAME_PREFIX)
-        print VOL_NAME_PREFIX, vol_name_prefix
+        print(VOL_NAME_PREFIX, vol_name_prefix)
         vol_count = self.config_get(VOL_COUNT)
-        print VOL_COUNT, vol_count
+        print(VOL_COUNT, vol_count)
         vol_size = self.config_get(VOL_SIZE)
-        print VOL_SIZE, vol_size
+        print(VOL_SIZE, vol_size)
         server_name_prefix = self.config_get(SERVER_NAME_PREFIX)
-        print SERVER_NAME_PREFIX, server_name_prefix
+        print(SERVER_NAME_PREFIX, server_name_prefix)
         server_count = self.config_get(SERVER_COUNT)
-        print SERVER_COUNT, server_count
+        print(SERVER_COUNT, server_count)
 
         self.main_function(vol_name_prefix, server_name_prefix, vol_count,  vol_size, server_count)
 
@@ -67,8 +67,8 @@ class SvtVolumeTester(svt_tester_base.SvtTesterBase):
         cinderUrl = self.getServiceUrl('volume')
         try:
             _, volumeType = cinderUtils.listVolumeTypes(cinderUrl, self.authent_id)
-        except HttpError, e:
-            print 'HTTP Error: {0}'.format(e.body)
+        except HttpError as e:
+            print('HTTP Error: {0}'.format(e.body))
             os._exit(1)
                 
         attached_vm_count = 0
@@ -80,7 +80,7 @@ class SvtVolumeTester(svt_tester_base.SvtTesterBase):
                 #print "Vm details with id and name ", vm_id, vm['name']
                 vmhealth1 = vmdet ['health_status'] ['health_value']            
                 #print "vm health is", vmhealth1                
-                print "vm health value ", vmdet['name'] + " is ", vmhealth1
+                print("vm health value ", vmdet['name'] + " is ", vmhealth1)
                 if vmhealth1 == 'OK':                 
                     if attached_vm_count < server_count:
                         vol_name_prefixwithcount = vol_name_prefix + str(attached_vm_count)                            
@@ -92,16 +92,16 @@ class SvtVolumeTester(svt_tester_base.SvtTesterBase):
                                         },
                                     "count": vol_count
                         }
-                        print volumeProps
+                        print(volumeProps)
                         try:
                             _, volumesDict = novaUtils.bulkCreateAttachVolume(novaUrl, self.authent_id, volumeProps, vm_id)
                             attached_vm_count = attached_vm_count + 1
-                        except HttpError, e:
-                            print 'HTTP Error: {0}'.format(e.body)
+                        except HttpError as e:
+                            print('HTTP Error: {0}'.format(e.body))
                             os._exit(1)
                 else:
-                    print "RMC is inactive for VM", vmdet['name']
+                    print("RMC is inactive for VM", vmdet['name'])
         time.sleep(300)
-        print "Volume attachment process is completed for", str(attached_vm_count) + " vms"
+        print("Volume attachment process is completed for", str(attached_vm_count) + " vms")
 if __name__ == '__main__':
     svt_tester_base.main()
