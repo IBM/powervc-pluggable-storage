@@ -207,3 +207,45 @@ SSLError: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed (_ssl.c:618
 ```
 workaround:
 export PYTHONHTTPSVERIFY=0
+
+change ssl.py file with following code:
+
+[root@vm-221 ~]# diff ssl.py /usr/lib64/python3.6/ssl.py
+92c92
+< 
+---
+> import ssl
+464c464
+<         context.verify_mode = CERT_REQUIRED
+---
+>         context.verify_mode = ssl.CERT_REQUIRED
+476c476
+< def _create_unverified_context(protocol=PROTOCOL_TLS, *, cert_reqs=None,
+---
+> def _create_unverified_context(protocol=PROTOCOL_TLS, *, cert_reqs=CERT_NONE,
+494a495,496
+>     if not check_hostname:
+>         context.check_hostname = False
+496,497c498,500
+<         context.verify_mode = cert_reqs
+<     context.check_hostname = check_hostname
+---
+>         context.verify_mode = ssl.CERT_NONE
+>     if check_hostname:
+>         context.check_hostname = True
+700a704
+>             
+702c706
+<             self._context.verify_mode = cert_reqs
+---
+>             self._context.verify_mode = ssl.CERT_NONE
+765a770
+>                 ssl._create_default_https_context = ssl._create_unverified_context
+1181c1186
+<         cert_reqs = CERT_REQUIRED
+---
+>         cert_reqs = CERT_NONE
+1185c1190
+<                                      cert_reqs=cert_reqs,
+---
+>                                      cert_reqs=ssl.CERT_NONE,
