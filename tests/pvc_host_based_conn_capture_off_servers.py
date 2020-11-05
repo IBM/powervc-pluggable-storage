@@ -16,7 +16,7 @@ from rest_framework import svt_tester_base
 from rest_framework.restUtils import HttpError
 from datetime import datetime
 from datetime import timedelta
-import Utils
+from . import Utils
 import sys
 import time
 import os
@@ -68,24 +68,24 @@ class SvtCaptureTester(svt_tester_base.SvtTesterBase):
         options_missing = False
         for option in self.required_options:
             if not self.config.has_option(self.config_section, option):
-                print 'option=', option, 'not found in configuration file'
+                print('option=', option, 'not found in configuration file')
                 options_missing = True
         if options_missing:
-            print 'Provide missing options to the configuration file.'
+            print('Provide missing options to the configuration file.')
             os._exit(1)
 
         server_name_prefix = self.config_get(SRV_NAME_PREFIX)
-        print SRV_NAME_PREFIX, server_name_prefix
+        print(SRV_NAME_PREFIX, server_name_prefix)
         src_host = self.config_get(SRC_HOST)
-        print SRC_HOST, src_host
+        print(SRC_HOST, src_host)
         concurrent_captures = self.config_get(CONCURRENT_CAPTURES)
-        print CONCURRENT_CAPTURES, concurrent_captures
+        print(CONCURRENT_CAPTURES, concurrent_captures)
         time_duration = self.config_get(TIME_DURATION)
-        print TIME_DURATION, time_duration
+        print(TIME_DURATION, time_duration)
         time_units = self.config_get(TIME_UNITS)
-        print TIME_UNITS, time_units
+        print(TIME_UNITS, time_units)
         cap_name_prefix = self.config_get(CAP_NAME_PREFIX)
-        print CAP_NAME_PREFIX, cap_name_prefix
+        print(CAP_NAME_PREFIX, cap_name_prefix)
 
         if time_units == 'seconds':
             stop_delta = timedelta(seconds=time_duration)
@@ -96,8 +96,8 @@ class SvtCaptureTester(svt_tester_base.SvtTesterBase):
         elif time_units == 'days':
             stop_delta = timedelta(days=time_duration)
         else:
-            print 'Unexpected time units, '\
-                'should be seconds, minutes, hours, days'
+            print('Unexpected time units, '\
+                'should be seconds, minutes, hours, days')
             os._exit(1)
 
         start = datetime.now()
@@ -106,7 +106,7 @@ class SvtCaptureTester(svt_tester_base.SvtTesterBase):
         while elapsed_delta < stop_delta:
             authTokenId = self.authent_id
 
-            print 'Obtaining the Managed Shutdown Server List...'
+            print('Obtaining the Managed Shutdown Server List...')
             server_list = []
             novaUrl = self.getServiceUrl('compute')
             try:
@@ -116,33 +116,33 @@ class SvtCaptureTester(svt_tester_base.SvtTesterBase):
 
                 if to_be_captured:
                     for server in to_be_captured:
-                        print 'name=', server['name'], 'id=', server['id']
+                        print('name=', server['name'], 'id=', server['id'])
                         server_list.append({'name': server['name'],
                                             'id': server['id']})
-                print 'The number of servers in the serverlist is %d' % len(server_list)
+                print('The number of servers in the serverlist is %d' % len(server_list))
 
                 stopped_servers = get_shutdown_server_list(authTokenId, novaUrl, vm_list)
-            except HttpError, e:
-                print 'HTTP Error: {0}'.format(e.body)
+            except HttpError as e:
+                print('HTTP Error: {0}'.format(e.body))
                 os._exit(1)
             if not stopped_servers:
-                print 'no stopped servers found, exiting'
+                print('no stopped servers found, exiting')
                 os._exit(1)
-            print 'stopped servers=', str(stopped_servers)
+            print('stopped servers=', str(stopped_servers))
             glanceUrl = self.getServiceUrl('image')
             no_of_captures += capture_servers(authTokenId, novaUrl, glanceUrl,
                                      stopped_servers, TIMEOUT, SLEEP_INTERVAL, concurrent_captures, cap_name_prefix)
             elapsed_delta = datetime.now() - start
-            print 'elapsed_delta = {0}'.format(elapsed_delta)
-        print "Total number of captures done : %d", no_of_captures
+            print('elapsed_delta = {0}'.format(elapsed_delta))
+        print("Total number of captures done : %d", no_of_captures)
 
 def get_shutdown_server_list(authTokenId, novaUrl, server_list):
-    print 'Obtaining the Shutdown Managed Server List...'
+    print('Obtaining the Shutdown Managed Server List...')
 
     stopped_servers = []
     sleep_needed = False
     for server in server_list:
-        print 'Getting Initial VM state...'
+        print('Getting Initial VM state...')
         serverState = \
             server['OS-EXT-STS:vm_state']
         sys.stdout.write('Server state = {0} \n'.format(serverState))
@@ -152,15 +152,15 @@ def get_shutdown_server_list(authTokenId, novaUrl, server_list):
         elif serverState == 'active':
             try:
                 Utils.send_stop_server_request(authTokenId, novaUrl, server)
-            except HttpError, e:
-                print 'HTTP Error: {0}'.format(e.body)
+            except HttpError as e:
+                print('HTTP Error: {0}'.format(e.body))
                 os._exit(1)
             sleep_needed = True
             stopped_servers.append(server)
-    print 'Stop initiated on all the Active VMs, Please wait.....'
+    print('Stop initiated on all the Active VMs, Please wait.....')
     if sleep_needed:
         time.sleep(240)
-    print 'The number of stopped servers in the stopped_server list is %d' % len(stopped_servers)
+    print('The number of stopped servers in the stopped_server list is %d' % len(stopped_servers))
     return stopped_servers
 
 
@@ -168,9 +168,9 @@ def capture_servers(authTokenId, novaUrl, glanceUrl, stopped_servers,
                     TIMEOUT, SLEEP_INTERVAL, concurrent_captures, cap_name_prefix):
     max = len(stopped_servers)
     i = 0
-    while i < range(len(stopped_servers)):
+    while i < list(range(len(stopped_servers))):
         if ((i == max) and (max-i) == 0):
-            print 'Total number of VMs captured for each iteration is %d' % i
+            print('Total number of VMs captured for each iteration is %d' % i)
             return i
         curr_stopped_server = []
         min = concurrent_captures
@@ -180,7 +180,7 @@ def capture_servers(authTokenId, novaUrl, glanceUrl, stopped_servers,
 
         for j in range(0, min):
             curr_stopped_server.append(stopped_servers[i+j])
-            print "The current stopped servers", curr_stopped_server
+            print("The current stopped servers", curr_stopped_server)
         capture_servers_sub(authTokenId, novaUrl, glanceUrl, curr_stopped_server, cap_name_prefix, TIMEOUT, SLEEP_INTERVAL)
         i += min
     return i
@@ -193,19 +193,19 @@ def capture_servers_sub(authTokenId, novaUrl, glanceUrl, curr_stopped_servers, c
         if isinstance(server, svt_tester_base.VmTuple):
             server = {'id': server.id, 'name': server.name}
         cap_vsname = cap_name_prefix+server['name']
-        print 'Cap VS Name=', cap_vsname
+        print('Cap VS Name=', cap_vsname)
         actionProps = {'createImage': {'name': cap_vsname,
                            'metadata': {}
                            }
                     }
         try:
-            print 'Capturing server=', server['name'], server['id']
+            print('Capturing server=', server['name'], server['id'])
             createServerActionResponse, \
             createServerActionResponseBodyJSON = \
             novaUtils.createServerAction(novaUrl, authTokenId,
                                          server['id'], actionProps)
-        except HttpError, e:
-            print 'HTTP Error: {0}'.format(e.body)
+        except HttpError as e:
+            print('HTTP Error: {0}'.format(e.body))
             continue
         image_id = ''
         for header, value in createServerActionResponse.getheaders():
@@ -213,11 +213,11 @@ def capture_servers_sub(authTokenId, novaUrl, glanceUrl, curr_stopped_servers, c
                 image_id = value.split('/')
                 image_id = image_id[-1]
 
-        print 'Captured image id = %s for server %s' % \
-            (image_id, server['name'])
+        print('Captured image id = %s for server %s' % \
+            (image_id, server['name']))
         image_list.append({'image_id': image_id, 'server': server})
 
-    print 'Getting Image state...'
+    print('Getting Image state...')
     runtime = 0
     capture_list = []
     capture_list.extend(image_list)
@@ -235,8 +235,8 @@ def capture_servers_sub(authTokenId, novaUrl, glanceUrl, curr_stopped_servers, c
                 showImageResponse, showImageResponseBodyJSON = \
                     glanceUtils.showImage(glanceUrl, authTokenId,
                                           image['image_id'])
-            except HttpError, e:
-                print 'HTTP Error: {0}'.format(e.body)
+            except HttpError as e:
+                print('HTTP Error: {0}'.format(e.body))
                 os._exit(1)
             imageState = showImageResponseBodyJSON['status']
             if imageState == 'active':
@@ -255,11 +255,11 @@ def capture_servers_sub(authTokenId, novaUrl, glanceUrl, curr_stopped_servers, c
     print('')
 
     if runtime > timeout:
-        print 'ERROR: All Image captures did not' + \
-            ' complete within expected timeframe.'
-        print '%d of %d Captures completed.' % (len(completed_list),
-                                                len(image_list))
-    print ''
+        print('ERROR: All Image captures did not' + \
+            ' complete within expected timeframe.')
+        print('%d of %d Captures completed.' % (len(completed_list),
+                                                len(image_list)))
+    print('')
     return completed_list
 
 if __name__ == '__main__':

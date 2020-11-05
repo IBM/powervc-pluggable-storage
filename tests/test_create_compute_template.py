@@ -9,15 +9,15 @@
 #WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #See the License for the specific language governing permissions and
 #limitations under the License.
-from __builtin__ import str
-from ConfigParser import NoOptionError
+from builtins import str
+from configparser import NoOptionError
 import traceback
 from rest_framework import novaUtils
 from rest_framework import svt_tester_base
 from rest_framework.svt_tester_base import SvtTesterBase
 from rest_framework.restUtils import HttpError
 from rest_framework.statemachine import StateMachine
-import Utils
+from . import Utils
 import time
 import subprocess
 import sys
@@ -95,10 +95,10 @@ class CreateComputeTemplate(svt_tester_base.SvtTesterBase):
         options_missing = False
         for option in self.required_options:
             if not self.config.has_option(self.config_section, option):
-                print 'option=', option, 'not found in configuration file'
+                print('option=', option, 'not found in configuration file')
                 options_missing = True
         if options_missing:
-            print 'Provide missing options in the configuration file.'
+            print('Provide missing options in the configuration file.')
             os._exit(1)
 
         novaUrl = self.getServiceUrl('compute')
@@ -138,21 +138,21 @@ class CreateComputeTemplate(svt_tester_base.SvtTesterBase):
             max_proc_units1 = max_proc_units[i]
             Props = self.create_Props_for_compute_template(flavor_name1, desired_ram1, desired_cpu1, disk_size1)
             Props2 = self.create_Props_for_compute_template_advance(min_vcpu1, max_vcpu1, min_mem1, max_mem1, proc_units1, min_proc_units1, max_proc_units1, remote_restart)
-            print "Create Compute Template:", str(Props)
+            print("Create Compute Template:", str(Props))
             #time.sleep(10)
 
             try :
                 registrnRespns, registrnRespnsBodyJSON = novaUtils.createComputeTemplate(novaUrl, self.authent_id , Props)
-                print "Create Compute Template response:"
-                print str(registrnRespnsBodyJSON)
+                print("Create Compute Template response:")
+                print(str(registrnRespnsBodyJSON))
                 flavor_id = str(registrnRespnsBodyJSON['flavor']['id'])
                 registrnRespns, registrnRespnsBodyJSON = novaUtils.createComputeTemplateAdvance(novaUrl, self.authent_id , Props2, flavor_id)
-                print "Create Advance Compute Template response:"
-                print str(registrnRespnsBodyJSON)
+                print("Create Advance Compute Template response:")
+                print(str(registrnRespnsBodyJSON))
                 time.sleep(20)
 
-            except HttpError, e:
-                print 'HTTP Error: {0}'.format(e.body)
+            except HttpError as e:
+                print('HTTP Error: {0}'.format(e.body))
                 os._exit(1)
 
             i += 1

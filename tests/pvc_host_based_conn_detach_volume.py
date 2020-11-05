@@ -15,7 +15,7 @@ from rest_framework import novaUtils
 from rest_framework import cinderUtils
 from rest_framework.restUtils import HttpError
 import time
-import Utils
+from . import Utils
 from datetime import datetime
 import pprint
 from datetime import datetime
@@ -44,22 +44,22 @@ class SVTDettachIntegrated(svt_tester_base.SvtTesterBase):
         options_missing = False
         for option in self.required_options:
             if not self.config.has_option(self.config_section, option):
-                print 'option=', option, 'not found in configuration file'
+                print(('option=', option, 'not found in configuration file'))
                 options_missing = True
         if options_missing:
-            print 'Provide missing options to the configuration file.'
+            print('Provide missing options to the configuration file.')
             exit(1)
 
         server_name_prefix = self.config_get(SRV_NAME_PREFIX)
-        print SRV_NAME_PREFIX, server_name_prefix
+        print((SRV_NAME_PREFIX, server_name_prefix))
         src_host = self.config_get(SRC_HOST)
-        print SRC_HOST, src_host
+        print((SRC_HOST, src_host))
         vol_pre = self.config_get(VOL_PRE)
-        print VOL_PRE, vol_pre
+        print((VOL_PRE, vol_pre))
         vol_start_idx = self.config_get(VOL_START_IDX)
-        print VOL_START_IDX, vol_start_idx
+        print((VOL_START_IDX, vol_start_idx))
         con_dettach = self.config_get(CONN_DETTACH)
-        print CONN_DETTACH, con_dettach
+        print((CONN_DETTACH, con_dettach))
         novaUrl = self.getServiceUrl('compute')
         cinderUrl = self.getServiceUrl('volume')
         auth_id = self.authent_id
@@ -67,7 +67,7 @@ class SVTDettachIntegrated(svt_tester_base.SvtTesterBase):
         number_of_dettaches = 0
         number_of_dettaches += test_1009_Dettach_Volume(cinderUrl, auth_id, src_host,
                                      vol_start_idx, vol_pre, server_name_prefix, novaUrl, con_dettach)
-        print "Total number of dettach completed: %d", number_of_dettaches
+        print(("Total number of dettach completed: %d", number_of_dettaches))
         os._exit(0)
 
     def test_1001_detach_volume1(self):
@@ -76,22 +76,22 @@ class SVTDettachIntegrated(svt_tester_base.SvtTesterBase):
         options_missing = False
         for option in self.required_options:
             if not self.config.has_option(self.config_section, option):
-                print 'option=', option, 'not found in configuration file'
+                print(('option=', option, 'not found in configuration file'))
                 options_missing = True
         if options_missing:
-            print 'Provide missing options to the configuration file.'
+            print('Provide missing options to the configuration file.')
             exit(1)
 
         server_name_prefix = self.config_get(SRV_NAME_PREFIX)
-        print SRV_NAME_PREFIX, server_name_prefix
+        print((SRV_NAME_PREFIX, server_name_prefix))
         src_host = self.config_get(SRC_HOST)
-        print SRC_HOST, src_host
+        print((SRC_HOST, src_host))
         vol_pre = self.config_get(VOL_PRE)
-        print VOL_PRE, vol_pre
+        print((VOL_PRE, vol_pre))
         vol_start_idx = self.config_get(VOL_START_IDX)
-        print VOL_START_IDX, vol_start_idx
+        print((VOL_START_IDX, vol_start_idx))
         con_dettach = self.config_get(CONN_DETTACH)
-        print CONN_DETTACH, con_dettach
+        print((CONN_DETTACH, con_dettach))
         novaUrl = self.getServiceUrl('compute')
         cinderUrl = self.getServiceUrl('volume')
         auth_id = self.authent_id
@@ -99,7 +99,7 @@ class SVTDettachIntegrated(svt_tester_base.SvtTesterBase):
         number_of_dettaches = 0
         number_of_dettaches += test_1009_Dettach_Volume(cinderUrl, auth_id, src_host,
                                      vol_start_idx, vol_pre, server_name_prefix, novaUrl, con_dettach)
-        print "Total number of dettach completed: %d", number_of_dettaches
+        print(("Total number of dettach completed: %d", number_of_dettaches))
         os._exit(0)
 
     def test_1001_detach_volume2(self):
@@ -108,22 +108,22 @@ class SVTDettachIntegrated(svt_tester_base.SvtTesterBase):
         options_missing = False
         for option in self.required_options:
             if not self.config.has_option(self.config_section, option):
-                print 'option=', option, 'not found in configuration file'
+                print(('option=', option, 'not found in configuration file'))
                 options_missing = True
         if options_missing:
-            print 'Provide missing options to the configuration file.'
+            print('Provide missing options to the configuration file.')
             exit(1)
 
         server_name_prefix = self.config_get(SRV_NAME_PREFIX)
-        print SRV_NAME_PREFIX, server_name_prefix
+        print((SRV_NAME_PREFIX, server_name_prefix))
         src_host = self.config_get(SRC_HOST)
-        print SRC_HOST, src_host
+        print((SRC_HOST, src_host))
         vol_pre = self.config_get(VOL_PRE)
-        print VOL_PRE, vol_pre
+        print((VOL_PRE, vol_pre))
         vol_start_idx = self.config_get(VOL_START_IDX)
-        print VOL_START_IDX, vol_start_idx
+        print((VOL_START_IDX, vol_start_idx))
         con_dettach = self.config_get(CONN_DETTACH)
-        print CONN_DETTACH, con_dettach
+        print((CONN_DETTACH, con_dettach))
         novaUrl = self.getServiceUrl('compute')
         cinderUrl = self.getServiceUrl('volume')
         auth_id = self.authent_id
@@ -131,7 +131,7 @@ class SVTDettachIntegrated(svt_tester_base.SvtTesterBase):
         number_of_dettaches = 0
         number_of_dettaches += test_1009_Dettach_Volume(cinderUrl, auth_id, src_host,
                                      vol_start_idx, vol_pre, server_name_prefix, novaUrl, con_dettach)
-        print "Total number of dettach completed: %d", number_of_dettaches
+        print(("Total number of dettach completed: %d", number_of_dettaches))
         os._exit(0)
 
     def test_1001_detach_volume3(self):
@@ -140,22 +140,22 @@ class SVTDettachIntegrated(svt_tester_base.SvtTesterBase):
         options_missing = False
         for option in self.required_options:
             if not self.config.has_option(self.config_section, option):
-                print 'option=', option, 'not found in configuration file'
+                print(('option=', option, 'not found in configuration file'))
                 options_missing = True
         if options_missing:
-            print 'Provide missing options to the configuration file.'
+            print('Provide missing options to the configuration file.')
             exit(1)
 
         server_name_prefix = self.config_get(SRV_NAME_PREFIX)
-        print SRV_NAME_PREFIX, server_name_prefix
+        print((SRV_NAME_PREFIX, server_name_prefix))
         src_host = self.config_get(SRC_HOST)
-        print SRC_HOST, src_host
+        print((SRC_HOST, src_host))
         vol_pre = self.config_get(VOL_PRE)
-        print VOL_PRE, vol_pre
+        print((VOL_PRE, vol_pre))
         vol_start_idx = self.config_get(VOL_START_IDX)
-        print VOL_START_IDX, vol_start_idx
+        print((VOL_START_IDX, vol_start_idx))
         con_dettach = self.config_get(CONN_DETTACH)
-        print CONN_DETTACH, con_dettach
+        print((CONN_DETTACH, con_dettach))
         novaUrl = self.getServiceUrl('compute')
         cinderUrl = self.getServiceUrl('volume')
         auth_id = self.authent_id
@@ -163,7 +163,7 @@ class SVTDettachIntegrated(svt_tester_base.SvtTesterBase):
         number_of_dettaches = 0
         number_of_dettaches += test_1009_Dettach_Volume(cinderUrl, auth_id, src_host,
                                      vol_start_idx, vol_pre, server_name_prefix, novaUrl, con_dettach)
-        print "Total number of dettach completed: %d", number_of_dettaches
+        print(("Total number of dettach completed: %d", number_of_dettaches))
         os._exit(0)
 
     def test_1001_detach_volume4(self):
@@ -172,22 +172,22 @@ class SVTDettachIntegrated(svt_tester_base.SvtTesterBase):
         options_missing = False
         for option in self.required_options:
             if not self.config.has_option(self.config_section, option):
-                print 'option=', option, 'not found in configuration file'
+                print(('option=', option, 'not found in configuration file'))
                 options_missing = True
         if options_missing:
-            print 'Provide missing options to the configuration file.'
+            print('Provide missing options to the configuration file.')
             exit(1)
 
         server_name_prefix = self.config_get(SRV_NAME_PREFIX)
-        print SRV_NAME_PREFIX, server_name_prefix
+        print((SRV_NAME_PREFIX, server_name_prefix))
         src_host = self.config_get(SRC_HOST)
-        print SRC_HOST, src_host
+        print((SRC_HOST, src_host))
         vol_pre = self.config_get(VOL_PRE)
-        print VOL_PRE, vol_pre
+        print((VOL_PRE, vol_pre))
         vol_start_idx = self.config_get(VOL_START_IDX)
-        print VOL_START_IDX, vol_start_idx
+        print((VOL_START_IDX, vol_start_idx))
         con_dettach = self.config_get(CONN_DETTACH)
-        print CONN_DETTACH, con_dettach
+        print((CONN_DETTACH, con_dettach))
         novaUrl = self.getServiceUrl('compute')
         cinderUrl = self.getServiceUrl('volume')
         auth_id = self.authent_id
@@ -195,7 +195,7 @@ class SVTDettachIntegrated(svt_tester_base.SvtTesterBase):
         number_of_dettaches = 0
         number_of_dettaches += test_1009_Dettach_Volume(cinderUrl, auth_id, src_host,
                                      vol_start_idx, vol_pre, server_name_prefix, novaUrl, con_dettach)
-        print "Total number of dettach completed: %d", number_of_dettaches
+        print(("Total number of dettach completed: %d", number_of_dettaches))
         os._exit(0)
 
     def test_1001_detach_volume5(self):
@@ -204,22 +204,22 @@ class SVTDettachIntegrated(svt_tester_base.SvtTesterBase):
         options_missing = False
         for option in self.required_options:
             if not self.config.has_option(self.config_section, option):
-                print 'option=', option, 'not found in configuration file'
+                print(('option=', option, 'not found in configuration file'))
                 options_missing = True
         if options_missing:
-            print 'Provide missing options to the configuration file.'
+            print('Provide missing options to the configuration file.')
             exit(1)
 
         server_name_prefix = self.config_get(SRV_NAME_PREFIX)
-        print SRV_NAME_PREFIX, server_name_prefix
+        print((SRV_NAME_PREFIX, server_name_prefix))
         src_host = self.config_get(SRC_HOST)
-        print SRC_HOST, src_host
+        print((SRC_HOST, src_host))
         vol_pre = self.config_get(VOL_PRE)
-        print VOL_PRE, vol_pre
+        print((VOL_PRE, vol_pre))
         vol_start_idx = self.config_get(VOL_START_IDX)
-        print VOL_START_IDX, vol_start_idx
+        print((VOL_START_IDX, vol_start_idx))
         con_dettach = self.config_get(CONN_DETTACH)
-        print CONN_DETTACH, con_dettach
+        print((CONN_DETTACH, con_dettach))
         novaUrl = self.getServiceUrl('compute')
         cinderUrl = self.getServiceUrl('volume')
         auth_id = self.authent_id
@@ -227,7 +227,7 @@ class SVTDettachIntegrated(svt_tester_base.SvtTesterBase):
         number_of_dettaches = 0
         number_of_dettaches += test_1009_Dettach_Volume(cinderUrl, auth_id, src_host,
                                      vol_start_idx, vol_pre, server_name_prefix, novaUrl, con_dettach)
-        print "Total number of dettach completed: %d", number_of_dettaches
+        print(("Total number of dettach completed: %d", number_of_dettaches))
         os._exit(0)
 
 
@@ -240,8 +240,8 @@ def test_1009_Dettach_Volume(cinderUrl, auth_id, host_name, vol_start_index, vol
     try:
         _, volumesDict = cinderUtils.listVolumeDetails(cinderUrl, auth_id)
 
-    except HttpError, e:
-        print 'HTTP Error: {0}'.format(e.body)
+    except HttpError as e:
+        print(('HTTP Error: {0}'.format(e.body)))
         exit(1)
 
     if volumesDict:
@@ -265,9 +265,9 @@ def test_1009_Dettach_Volume(cinderUrl, auth_id, host_name, vol_start_index, vol
 def conn_dettach_vols(authTokenId, novaUrl, volumes_to_dettach, con_dettach):
         max = len(volumes_to_dettach)
         i = 0
-        while i < range(len(volumes_to_dettach)):
+        while i < list(range(len(volumes_to_dettach))):
                 if ((i == max) and (max-i) == 0):
-                        print 'Total number of volumes to detach for each iteration is %d' % i
+                        print(('Total number of volumes to detach for each iteration is %d' % i))
                         return i
                 curr_dettach_vol = []
                 min = con_dettach
@@ -276,7 +276,7 @@ def conn_dettach_vols(authTokenId, novaUrl, volumes_to_dettach, con_dettach):
                         min=max-i
                 for j in range(0, min):
                         curr_dettach_vol.append(volumes_to_dettach[i+j])
-                        print "The current started servers", volumes_to_dettach
+                        print(("The current started servers", volumes_to_dettach))
                         #print "j:", j
                 conn_dettach_vols_sub(authTokenId, novaUrl, curr_dettach_vol)
 		time.sleep(10)
@@ -288,7 +288,7 @@ def conn_dettach_vols_sub(authTokenId, novaUrl, curr_dettach_vol):
     for vol_det in curr_dettach_vol:
         volid = vol_det['vol_id']
         vmid = vol_det['vm_id']
-	print 'Dettaching Volume=', vmid, volid
+	print(('Dettaching Volume=', vmid, volid))
         novaUtils.dettachVolume(novaUrl, authTokenId, vmid, volid)
     	time.sleep(4)
 

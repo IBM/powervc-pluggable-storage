@@ -14,7 +14,7 @@ from rest_framework import glanceUtils
 from rest_framework import novaUtils
 from rest_framework import svt_tester_base
 from rest_framework.restUtils import HttpError
-import Utils
+from . import Utils
 import sys
 import time
 import os
@@ -61,22 +61,22 @@ class SvtStartServerTester(svt_tester_base.SvtTesterBase):
         options_missing = False
         for option in self.required_options:
             if not self.config.has_option(self.config_section, option):
-                print 'option=', option, 'not found in configuration file'
+                print('option=', option, 'not found in configuration file')
                 options_missing = True
         if options_missing:
-            print 'Provide missing options to the configuration file.'
+            print('Provide missing options to the configuration file.')
             exit(1)
 
         server_name_prefix = self.config_get(SRV_NAME_PREFIX)
-        print SRV_NAME_PREFIX, server_name_prefix
+        print(SRV_NAME_PREFIX, server_name_prefix)
         src_host = self.config_get(SRC_HOST)
-        print SRC_HOST, src_host
+        print(SRC_HOST, src_host)
         concurrent_starts = self.config_get(CONCURRENT_STARTS)
-        print CONCURRENT_STARTS, concurrent_starts
+        print(CONCURRENT_STARTS, concurrent_starts)
 
         authTokenId = self.authent_id
 
-        print 'Obtaining the Managed Server List...'
+        print('Obtaining the Managed Server List...')
         server_list = []
         novaUrl = self.getServiceUrl('compute')
         try:
@@ -86,23 +86,23 @@ class SvtStartServerTester(svt_tester_base.SvtTesterBase):
 
     	    if to_be_started:
                 for server in to_be_started:
-                    print 'name=', server['name'], 'id=', server['id']
+                    print('name=', server['name'], 'id=', server['id'])
                     server_list.append({'name': server['name'],
                                         'id': server['id']})
-            print 'The number of servers in the serverlist is %d' % len(server_list)
+            print('The number of servers in the serverlist is %d' % len(server_list))
             max = conc_start_servers(authTokenId, novaUrl, server_list, concurrent_starts)
             return max
-        except HttpError, e:
-            print 'HTTP Error: {0}'.format(e.body)
+        except HttpError as e:
+            print('HTTP Error: {0}'.format(e.body))
             exit(1)
 
 def conc_start_servers(authTokenId, novaUrl, server_list, concurrent_starts):
         max = len(server_list)
         i = 0
-        while i < range(len(server_list)):
+        while i < list(range(len(server_list))):
                 #print "i :", i
                 if ((i == max) and (max-i) == 0):
-                        print 'Total number of servers started for each iteration is %d' % i
+                        print('Total number of servers started for each iteration is %d' % i)
                         os._exit(0)
                 curr_stopped_server = []
                 min = concurrent_starts
@@ -111,22 +111,22 @@ def conc_start_servers(authTokenId, novaUrl, server_list, concurrent_starts):
                         min=max-i
                 for j in range(0, min):
                         curr_stopped_server.append(server_list[i+j])
-                        print "The current stopped servers", curr_stopped_server
+                        print("The current stopped servers", curr_stopped_server)
                         #print "j:", j
                 started_servers = get_started_server_list(authTokenId, novaUrl, curr_stopped_server)
                 if not started_servers:
-                        print 'no started servers found, exiting'
+                        print('no started servers found, exiting')
                         exit(1)
-                print 'started servers=', str(started_servers)
+                print('started servers=', str(started_servers))
                 i += min 
         return max       
 
 def get_started_server_list(authTokenId, novaUrl, server_list):
-    print 'Obtaining the Managed Started Server List...'
+    print('Obtaining the Managed Started Server List...')
      
     started_servers = []
     for server in server_list:
-        print 'Getting Initial VM state...'
+        print('Getting Initial VM state...')
         showServerResponse, showServerResponseBodyJSON = \
             novaUtils.showServer(novaUrl, authTokenId, server['id'])
 
@@ -139,9 +139,9 @@ def get_started_server_list(authTokenId, novaUrl, server_list):
         elif serverState == 'stopped':
             Utils.send_start_server_request(authTokenId, novaUrl, server)
 	    started_servers.append(server)
-    print 'Start initiated on all the Stopped VMs, Please wait.....'
+    print('Start initiated on all the Stopped VMs, Please wait.....')
     time.sleep(30)
-    print 'The number of started servers in the started_server list is %d' % len(started_servers)
+    print('The number of started servers in the started_server list is %d' % len(started_servers))
     return started_servers
 
 if __name__ == '__main__':

@@ -16,7 +16,7 @@ from rest_framework import svt_tester_base
 from rest_framework.restUtils import HttpError
 from datetime import datetime
 from datetime import timedelta
-import Utils
+from . import Utils
 import sys
 import time
 import os
@@ -72,26 +72,26 @@ class SvtCaptureTester(svt_tester_base.SvtTesterBase):
         options_missing = False
         for option in self.required_options:
             if not self.config.has_option(self.config_section, option):
-                print 'option=', option, 'not found in configuration file'
+                print('option=', option, 'not found in configuration file')
                 options_missing = True
         if options_missing:
-            print 'Provide missing options in the configuration file.'
+            print('Provide missing options in the configuration file.')
             os._exit(1)
 
         server_name_prefix = self.config_get(SRV_NAME_PREFIX)
-        print SRV_NAME_PREFIX, server_name_prefix
+        print(SRV_NAME_PREFIX, server_name_prefix)
         src_host = self.config_get(SRC_HOST)
-        print SRC_HOST, src_host
+        print(SRC_HOST, src_host)
         concurrent_resizes = self.config_get(CONCURRENT_RESIZES)
-        print CONCURRENT_RESIZES, concurrent_resizes
+        print(CONCURRENT_RESIZES, concurrent_resizes)
         resize_flavor = self.config_get(RESIZE_FLAVOR)
-        print RESIZE_FLAVOR, resize_flavor
+        print(RESIZE_FLAVOR, resize_flavor)
         deploy_flavor = self.config_get(DEPLOY_FLAVOR)
-        print DEPLOY_FLAVOR, deploy_flavor
+        print(DEPLOY_FLAVOR, deploy_flavor)
         time_duration = self.config_get(TIME_DURATION)
-        print TIME_DURATION, time_duration
+        print(TIME_DURATION, time_duration)
         time_units = self.config_get(TIME_UNITS)
-        print TIME_UNITS, time_units
+        print(TIME_UNITS, time_units)
 
         if time_units == 'seconds':
             stop_delta = timedelta(seconds=time_duration)
@@ -102,8 +102,8 @@ class SvtCaptureTester(svt_tester_base.SvtTesterBase):
         elif time_units == 'days':
             stop_delta = timedelta(days=time_duration)
         else:
-            print 'Unexpected time units, '\
-                'should be seconds, minutes, hours, days'
+            print('Unexpected time units, '\
+                'should be seconds, minutes, hours, days')
             os._exit(1)
 
         start = datetime.now()
@@ -114,7 +114,7 @@ class SvtCaptureTester(svt_tester_base.SvtTesterBase):
 
             authTokenId = self.authent_id
 
-            print 'Obtaining the Servers/VMs List...'
+            print('Obtaining the Servers/VMs List...')
             server_list = []
             novaUrl = self.getServiceUrl('compute')
             try:
@@ -124,9 +124,9 @@ class SvtCaptureTester(svt_tester_base.SvtTesterBase):
 
                 for vm in vm_list:
                     if vm['name'].startswith(server_name_prefix):
-			                     print 'name=', vm['name'], 'id=', vm['id']
+			                     print('name=', vm['name'], 'id=', vm['id'])
 			                     to_be_resized.append(vm)
-                print 'The number of VMs from the VMslist containing the s pre-fix is %d' % len(to_be_resized)
+                print('The number of VMs from the VMslist containing the s pre-fix is %d' % len(to_be_resized))
 
 #    	        if to_be_resized:
  #                   for server in to_be_resized:
@@ -135,17 +135,17 @@ class SvtCaptureTester(svt_tester_base.SvtTesterBase):
     #            print 'The number of servers in the serverlist is %d' % len(server_list)
                 server_list = to_be_resized
                 started_servers = get_started_server_list(authTokenId, novaUrl, server_list)
-            except HttpError, e:
-                print 'HTTP Error: {0}'.format(e.body)
+            except HttpError as e:
+                print('HTTP Error: {0}'.format(e.body))
                 os._exit(1)
             if not started_servers:
-                print 'no started servers found, exiting'
+                print('no started servers found, exiting')
                 os._exit(1)
 
             try:
-                print 'The VMs in Active state which will be resized: '
+                print('The VMs in Active state which will be resized: ')
                 for server in started_servers:
-                    print server['name']
+                    print(server['name'])
                 if resize_flag == 0:
                     flavor = resize_flavor
                     resize_flag = 0
@@ -154,27 +154,27 @@ class SvtCaptureTester(svt_tester_base.SvtTesterBase):
                     resize_flag = 0
                 no_of_resizes += resize_servers(authTokenId, novaUrl, started_servers, concurrent_resizes, flavor)
                 elapsed_delta = datetime.now() - start
-                print 'elapsed_delta = {0}'.format(elapsed_delta)
-            except Exception, e:
-                print 'Exception encountered ', str(e)
-                print "Total successful Active resizes so far",no_of_resizes
+                print('elapsed_delta = {0}'.format(elapsed_delta))
+            except Exception as e:
+                print('Exception encountered ', str(e))
+                print("Total successful Active resizes so far",no_of_resizes)
                 os._exit(1)
             except IOError as e:
-                 print "I/O error({0}): {1}".format(e.errno, e.strerror)
-                 print "Total successful Active resizes so far ",no_of_resizes
+                 print("I/O error({0}): {1}".format(e.errno, e.strerror))
+                 print("Total successful Active resizes so far ",no_of_resizes)
                  os._exit(1)
             break
 
-        print "Total number of resizes completed : %d", no_of_resizes
+        print("Total number of resizes completed : %d", no_of_resizes)
 
 
 def get_started_server_list(authTokenId, novaUrl, server_list):
-    print 'Obtaining the Active VMs List...'
+    print('Obtaining the Active VMs List...')
 
     started_servers = []
     sleep_needed = False
     for server in server_list:
-        print 'Getting Initial VM state...'
+        print('Getting Initial VM state...')
         serverState = \
             server['OS-EXT-STS:vm_state']
         sys.stdout.write('Server state = {0} \n'.format(serverState))
@@ -190,18 +190,18 @@ def get_started_server_list(authTokenId, novaUrl, server_list):
 	    started_servers.append(server)
 
     if sleep_needed:
-        print 'Start initiated on all the Stopped VMs, Please wait.....'
+        print('Start initiated on all the Stopped VMs, Please wait.....')
         time.sleep(90)
-    print "The number of active VMs in the started_server list is %d", len(started_servers)
+    print("The number of active VMs in the started_server list is %d", len(started_servers))
     return started_servers
 
 
 def resize_servers(authTokenId, novaUrl, started_servers, concurrent_resizes, flavor):
     max = len(started_servers)
     i = 0
-    while i < range(len(started_servers)) and i < 8:
+    while i < list(range(len(started_servers))) and i < 8:
         if ((i == max) and (max-i) == 0):
-                print 'Total number of VMs to be resized for each iteration is %d' % i
+                print('Total number of VMs to be resized for each iteration is %d' % i)
                 return i
         curr_started_server = []
         min = concurrent_resizes
@@ -211,7 +211,7 @@ def resize_servers(authTokenId, novaUrl, started_servers, concurrent_resizes, fl
         for j in range(0, min):
 			curr_started_server.append(started_servers[i+j])
         for server in curr_started_server:
-                print "The current active servers is %s", server['name']
+                print("The current active servers is %s", server['name'])
 			#print "j:", j
         resize_servers_sub(authTokenId, novaUrl, curr_started_server, flavor)
         i += min
@@ -225,28 +225,28 @@ def resize_servers_sub(authTokenId, novaUrl, curr_started_servers, flavor1):
         resize_flavorId = None
         deploy_flavorId = None
         flavor_list = Utils.get_flavor_list(authTokenId, novaUrl)
-        print 'flavor list is %s', flavor_list
+        print('flavor list is %s', flavor_list)
         for flavor in flavor_list:
             if flavor['name'] == flavor1:
                 resize_flavorId = flavor['id']
-		print flavor['name'], resize_flavorId
+		print(flavor['name'], resize_flavorId)
 
         if not resize_flavorId:
-            print "Resize Flavor, {0} not found".format(flavor1)
+            print("Resize Flavor, {0} not found".format(flavor1))
             os._exit(1)
 
-        print 'Final VMs to resize are '
+        print('Final VMs to resize are ')
         for server in curr_started_servers:
-            print server['name']
+            print(server['name'])
         for server in curr_started_servers:
-            print 'Request Resize {0} to flavor {1}'.format(server['name'],
-                                                    flavor1)
+            print('Request Resize {0} to flavor {1}'.format(server['name'],
+                                                    flavor1))
             try:
                     print('Re-sizing VMs...')
                     Utils.resize_server(authTokenId, novaUrl, server,\
                                     resize_flavorId)
-            except Exception, e:
-                print 'Exception encountered', str(e)
+            except Exception as e:
+                print('Exception encountered', str(e))
                 #print "Total successful Active resizes so far is",success_count
                 os._exit(1)
 
@@ -257,18 +257,18 @@ def resize_servers_sub(authTokenId, novaUrl, curr_started_servers, flavor1):
 
             servStatus = Utils.get_server_status_dict(authTokenId,
                                                       novaUrl, server)
-            print 'Waiting for active state after resize'
+            print('Waiting for active state after resize')
             while servStatus:
-                print '\n \n servStatus Response=', servStatus
+                print('\n \n servStatus Response=', servStatus)
                 if not servStatus['task_state'] and \
                     servStatus['vm_state'] == 'active':
-                    print 'Active Resize of VM {0} complete successfully'.\
-                        format(server['name'])
+                    print('Active Resize of VM {0} complete successfully'.\
+                        format(server['name']))
                    # success_count =success_count + 1
                     break
                 elif servStatus['vm_state'] == 'error':
-                    print 'Error encountered in Active resize for VM with name {0} and id {1}' \
-                        .format(server['name'], server ['id'])
+                    print('Error encountered in Active resize for VM with name {0} and id {1}' \
+                        .format(server['name'], server ['id']))
                     #print "Total successful Active resizes so far is",success_count
                     raise Exception ("error in Active resize")
 

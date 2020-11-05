@@ -49,24 +49,24 @@ class SvtonboardVolume(svt_tester_base.SvtTesterBase):
             storagedisplayname = storageName[s]
             #volume_name = volume_name_list[s]
             argumNo = str(s)
-            print "Validating for " + argumNo +  " storage " + storagedisplayname + " argument"
-            print "Storage name given in config file =>", storagedisplayname
+            print("Validating for " + argumNo +  " storage " + storagedisplayname + " argument")
+            print("Storage name given in config file =>", storagedisplayname)
             for j in range(len(ressto[1]['storage_providers'])):
                 host_name = ressto[1]['storage_providers'][j]['storage_hostname']
                 servicelist = ressto[1]['storage_providers'] [j]['service']
                 storagebasename = servicelist['host_display_name']
                 #print servicelist
-                print "storage base name=>", storagebasename
-                print "storage host name=>", host_name
+                print("storage base name=>", storagebasename)
+                print("storage host name=>", host_name)
                 # Check if svc display name matches in pvc
                 if storagebasename in storagedisplayname:
-                    print "Storgae found in powervc"
-                    print "***********************"
+                    print("Storgae found in powervc")
+                    print("***********************")
                     for n in range(len(volume_name_list)):
                         onboardcount = 0;
                         #storagedisplayname = storageName[s]
                         volume_name = volume_name_list[n]
-                        print "Check volume existence:", volume_name
+                        print("Check volume existence:", volume_name)
                         # Get list of all volumes from that storgae
                         _, allvolumes = cinderUtils.listExistingVolumes(cinderUrl, token, host_name)
                         #print "all volumes", allvolumes
@@ -75,42 +75,42 @@ class SvtonboardVolume(svt_tester_base.SvtTesterBase):
                             #print 'name=', volume['name'], 'volumeid in storage=', volume['id']
                             # Check if volume name from config file exist in storage
                             if volume_name in volume['name'] :
-                                print "volume managed=>", volume['managed']
+                                print("volume managed=>", volume['managed'])
                                 #check if volume is managed by other powervc, if its false, then onboard volume.
                                 if volume['managed'] == False:
-                                    print "Before onboard count is", + onboardcount
+                                    print("Before onboard count is", + onboardcount)
                                     if vol_onboard_count > onboardcount:
                                         configUtils.onboard_vol(cinderUrl, token, volume['id'], host_name)
                                         onboardcount += 1
-                                        print "count is", + onboardcount
+                                        print("count is", + onboardcount)
 
                                         time.sleep(10)
-                                        print "onboarding volume", volume['id'] + "in", host_name
+                                        print("onboarding volume", volume['id'] + "in", host_name)
                                         #volumestoragelist.append(volume['id'])
                                     else:
-                                        print "User input threshold is reached. No need to onboard additional volumes from this storage"
+                                        print("User input threshold is reached. No need to onboard additional volumes from this storage")
 
                 else:
-                    print "Storage not found in ", storagebasename
+                    print("Storage not found in ", storagebasename)
 
     def test_1020_onboardvolumes(self):
 
         options_missing = False
         for option in self.required_options:
             if not self.config.has_option(self.config_section, option):
-                print 'option=', option, 'not found in configuration file'
+                print('option=', option, 'not found in configuration file')
                 options_missing = True
         if options_missing:
-            print 'Provide missing options to the configuration file.'
+            print('Provide missing options to the configuration file.')
             os._exit(1)
         volume_list = []
         volumestoragelist = []
         #novaUrl = self.getServiceUrl('compute')
         token = self.authent_id
         cinderUrl = self.getServiceUrl('volume')
-        print cinderUrl
+        print(cinderUrl)
         ressto = cinderUtils.showAllStorageProvidersDetail(cinderUrl, token)
-        print ressto[1]['storage_providers']
+        print(ressto[1]['storage_providers'])
         storageName = self.config_get('svc_display_name_list')
         volume_name_list = self.config_get('volume_name_list')
         vol_onboard_count = int(self.config_get('vol_onboard_count'))
@@ -121,19 +121,19 @@ class SvtonboardVolume(svt_tester_base.SvtTesterBase):
         options_missing = False
         for option in self.required_options:
             if not self.config.has_option(self.config_section, option):
-                print 'option=', option, 'not found in configuration file'
+                print('option=', option, 'not found in configuration file')
                 options_missing = True
         if options_missing:
-            print 'Provide missing options to the configuration file.'
+            print('Provide missing options to the configuration file.')
             os._exit(1)
         volume_list = []
         volumestoragelist = []
         #novaUrl = self.getServiceUrl('compute')
         token = self.authent_id
         cinderUrl = self.getServiceUrl('volume')
-        print cinderUrl
+        print(cinderUrl)
         ressto = cinderUtils.showAllStorageProvidersDetail(cinderUrl, token)
-        print ressto[1]['storage_providers']
+        print(ressto[1]['storage_providers'])
         storageName = self.config_get('svc_display_name_list')
         volume_name_list = self.config_get('volume_name_list')
         vol_onboard_count = int(self.config_get('vol_onboard_count'))

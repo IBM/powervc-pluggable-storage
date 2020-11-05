@@ -43,19 +43,19 @@ class SvtUnmanage(svt_tester_base.SvtTesterBase):
         options_missing = False
         for option in self.required_options:
             if not self.config.has_option(self.config_section, option):
-                print 'option=', option, 'not found in configuration file'
+                print(('option=', option, 'not found in configuration file'))
                 options_missing = True
         if options_missing:
-            print 'Provide missing options to the configuration file.'
+            print('Provide missing options to the configuration file.')
             os._exit(1)
         volume_list = []
         volumestoragelist = []
         novaUrl = self.getServiceUrl('compute')
         token = self.authent_id
         cinderUrl = self.getServiceUrl('volume')
-        print cinderUrl
+        print(cinderUrl)
         ressto = cinderUtils.showAllStorageProvidersDetail(cinderUrl, token)
-        print ressto[1]['storage_providers']
+        print((ressto[1]['storage_providers']))
         #storageName = self.config_get('svc_display_name_list')
         volume_name_prefix = self.config_get('volume_name_prefix')
         vol_unmanage_count = int(self.config_get('vol_unmanage_count'))
@@ -64,10 +64,10 @@ class SvtUnmanage(svt_tester_base.SvtTesterBase):
             #storagedisplayname = storageName[s]
             volume_name = volume_name_prefix[s]
             argumNo = str(s)
-            print "Validating for " + argumNo + " argument"
+            print(("Validating for " + argumNo + " argument"))
             #print "Storage name in powervc =>", storagedisplayname
             # Check if svc display name matches in pvc
-            print "Check volume existence:", volume_name
+            print(("Check volume existence:", volume_name))
             # Get list of all volumes from that storgae
             _, volumesDict = cinderUtils.listVolumeDetails(cinderUrl, token)
 
@@ -77,25 +77,25 @@ class SvtUnmanage(svt_tester_base.SvtTesterBase):
                 #print "volume list is", volumeList
             if volumeList:
                 for volume in volumeList:
-                    print 'name=', volume['name'], 'volume id in pvc=', volume['id'], 'status=', volume['status'], 'storage_hostname=', volume['backend_host']
+                    print(('name=', volume['name'], 'volume id in pvc=', volume['id'], 'status=', volume['status'], 'storage_hostname=', volume['backend_host']))
                         
                     #print "volume name from config file is", volume_name
                     if volume_name in volume['name']:
-                        print "Volume found in powervc"
+                        print("Volume found in powervc")
                         if volume['status'] == 'available':
                             if vol_unmanage_count > unmanagecount:
-                                print "Volume is available for unmanage"
+                                print("Volume is available for unmanage")
                                 #volume_list.append(volume['id'])
                                 volumeid = volume['id']
                                 host_name = volume['backend_host']
                                 try:
                                     configUtils.unmanage_vol(cinderUrl, token, volumeid, host_name)
                                     unmanagecount += 1
-                                except HttpError, e:
-                                    print 'HTTP Error: {0}'.format(e.body)
+                                except HttpError as e:
+                                    print(('HTTP Error: {0}'.format(e.body)))
                                     
                             else:
-                                print "User input threshold is reached. No need to unmanage additional volumes"
+                                print("User input threshold is reached. No need to unmanage additional volumes")
                                 os._exit(0)                                
             
        

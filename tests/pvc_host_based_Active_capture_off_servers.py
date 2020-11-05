@@ -68,22 +68,22 @@ class SvtCaptureTester(svt_tester_base.SvtTesterBase):
         options_missing = False
         for option in self.required_options:
             if not self.config.has_option(self.config_section, option):
-                print('option=', option, 'not found in configuration file')
+                print(('option=', option, 'not found in configuration file'))
                 options_missing = True
         if options_missing:
             print('Provide missing options to the configuration file.')
             os._exit(1)
 
         server_name_prefix = self.config_get(SRV_NAME_PREFIX)
-        print(SRV_NAME_PREFIX, server_name_prefix)
+        print((SRV_NAME_PREFIX, server_name_prefix))
         src_host = self.config_get(SRC_HOST)
-        print(SRC_HOST, src_host)
+        print((SRC_HOST, src_host))
         concurrent_captures = self.config_get(CONCURRENT_CAPTURES)
-        print(CONCURRENT_CAPTURES, concurrent_captures)
+        print((CONCURRENT_CAPTURES, concurrent_captures))
         time_duration = self.config_get(TIME_DURATION)
-        print(TIME_DURATION, time_duration)
+        print((TIME_DURATION, time_duration))
         time_units = self.config_get(TIME_UNITS)
-        print(TIME_UNITS, time_units)
+        print((TIME_UNITS, time_units))
 
         if time_units == 'seconds':
             stop_delta = timedelta(seconds=time_duration)
@@ -112,24 +112,24 @@ class SvtCaptureTester(svt_tester_base.SvtTesterBase):
                 to_be_captured = vm_list
                 if to_be_captured:
                     for server in to_be_captured:
-                        print('name=', server['name'], 'id=', server['id'])
+                        print(('name=', server['name'], 'id=', server['id']))
                         server_list.append({'name': server['name'],
                                             'id': server['id']})
-                print('The number of servers in the serverlist is %d' % len(server_list))
+                print(('The number of servers in the serverlist is %d' % len(server_list)))
 
                 stopped_servers = get_shutdown_server_list(authTokenId, novaUrl, vm_list)
             except HttpError as e:
-                print('HTTP Error: {0}'.format(e.body))
+                print(('HTTP Error: {0}'.format(e.body)))
                 os._exit(1)
             if not stopped_servers:
                print('no stopped servers found, exiting')
                os._exit(1)
-            print('stopped servers=', str(stopped_servers))
+            print(('stopped servers=', str(stopped_servers)))
             glanceUrl = self.getServiceUrl('image')
             no_of_captures += capture_servers(authTokenId, novaUrl, glanceUrl,stopped_servers, TIMEOUT, SLEEP_INTERVAL, concurrent_captures)
             elapsed_delta = datetime.now() - start
-            print('elapsed_delta = {0}'.format(elapsed_delta))
-        print("Total number of captures done : %d", no_of_captures)
+            print(('elapsed_delta = {0}'.format(elapsed_delta)))
+        print(("Total number of captures done : %d", no_of_captures))
 
 def get_shutdown_server_list(authTokenId, novaUrl, server_list):
     print('Obtaining the Shutdown Managed Server List...')
@@ -146,7 +146,7 @@ def get_shutdown_server_list(authTokenId, novaUrl, server_list):
         elif serverState == 'active':
             stopped_servers.append(server)
     print('Stop initiated on all the Active VMs, Please wait.....')
-    print('The number of stopped servers in the stopped_server list is %d' % len(stopped_servers))
+    print(('The number of stopped servers in the stopped_server list is %d' % len(stopped_servers)))
     return stopped_servers
 
 
@@ -156,7 +156,7 @@ def capture_servers(authTokenId, novaUrl, glanceUrl, stopped_servers,
     i = 0
     while i < len(list(range(len(stopped_servers)))):
         if ((i == max) and (max-i) == 0):
-            print('Total number of VMs captured for each iteration is %d' % i)
+            print(('Total number of VMs captured for each iteration is %d' % i))
             return i
         curr_stopped_server = []
         min = concurrent_captures
@@ -164,7 +164,7 @@ def capture_servers(authTokenId, novaUrl, glanceUrl, stopped_servers,
             min=max-i
         for j in range(0, min):
             curr_stopped_server.append(stopped_servers[i+j])
-            print("The current stopped servers", curr_stopped_server)
+            print(("The current stopped servers", curr_stopped_server))
         capture_servers_sub(authTokenId, novaUrl, glanceUrl, curr_stopped_server, TIMEOUT, SLEEP_INTERVAL)
         i += min
     return i
@@ -181,13 +181,13 @@ def capture_servers_sub(authTokenId, novaUrl, glanceUrl, curr_stopped_servers,
         if isinstance(server, svt_tester_base.VmTuple):
             server = {'id': server.id, 'name': server.name}
         try:
-            print('Capturing server=', server['name'], server['id'])
+            print(('Capturing server=', server['name'], server['id']))
             createServerActionResponse, \
             createServerActionResponseBodyJSON = \
             novaUtils.createServerAction(novaUrl, authTokenId,
                                          server['id'], actionProps)
         except HttpError as e:
-            print('HTTP Error: {0}'.format(e.body))
+            print(('HTTP Error: {0}'.format(e.body)))
             continue
         image_id = ''
         for header, value in createServerActionResponse.getheaders():
@@ -197,8 +197,8 @@ def capture_servers_sub(authTokenId, novaUrl, glanceUrl, curr_stopped_servers,
                 image_id = value.split('/')
                 image_id = image_id[-1]
 
-        print('Captured image id = %s for server %s' % \
-            (image_id, server['name']))
+        print(('Captured image id = %s for server %s' % \
+            (image_id, server['name'])))
         image_list.append({'image_id': image_id, 'server': server})
 
     print('Getting Image state...')
@@ -236,10 +236,10 @@ def capture_servers_sub(authTokenId, novaUrl, glanceUrl, curr_stopped_servers,
     print('')
 
     if runtime > timeout:
-        print('ERROR: All Image captures did not' + \
-            ' complete within expected timeframe.')
-        print('%d of %d Captures completed.' % (len(completed_list),
-                                                len(image_list)))
+        print(('ERROR: All Image captures did not' + \
+            ' complete within expected timeframe.'))
+        print(('%d of %d Captures completed.' % (len(completed_list),
+                                                len(image_list))))
     print('')
     return completed_list
 

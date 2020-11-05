@@ -15,7 +15,7 @@
 from rest_framework import svt_tester_base
 from rest_framework.restUtils import HttpError
 from rest_framework.statemachine import StateMachine
-import Utils
+from . import Utils
 import time
 import os
 #Variables for report generation
@@ -83,23 +83,23 @@ class SvtMobilityTester(svt_tester_base.SvtTesterBase):
         options_missing = False
         for option in self.required_options:
             if not self.config.has_option(self.config_section, option):
-                print 'option=', option, 'not found in configuration file'
+                print('option=', option, 'not found in configuration file')
                 options_missing = True
         if options_missing:
-            print 'Provide missing options to the configuration file.'
+            print('Provide missing options to the configuration file.')
             os._exit(1)
 
         max_migrations = self.config_get(MAX_MIGRATIONS)
-        print MAX_MIGRATIONS, max_migrations
+        print(MAX_MIGRATIONS, max_migrations)
         server_name_prefix = self.config_get(SRV_NAME_PREFIX)
-        print SRV_NAME_PREFIX, server_name_prefix
+        print(SRV_NAME_PREFIX, server_name_prefix)
         src_host = self.config_get(SRC_HOST)
-        print SRC_HOST, src_host
+        print(SRC_HOST, src_host)
         dest_host = self.config_get(DEST_HOST)
-        print DEST_HOST, dest_host
+        print(DEST_HOST, dest_host)
         concurrent_migrations = \
             self.config_get(CONCURRENT_MIGRATIONS)
-        print CONCURRENT_MIGRATIONS, concurrent_migrations
+        print(CONCURRENT_MIGRATIONS, concurrent_migrations)
 
         sm = StateMachine()
         sm.add_state(BEGIN_STATE, self.migrate_server)
@@ -121,8 +121,8 @@ class SvtMobilityTester(svt_tester_base.SvtTesterBase):
                 try:
                     servStatus = Utils.get_server_status_dict(self.authent_id,
                                                               self.novaUrl, vm)
-                except HttpError, e:
-                    print 'HTTP Error: {0}'.format(e.body)
+                except HttpError as e:
+                    print('HTTP Error: {0}'.format(e.body))
                     os._exit(1)
                 if servStatus and 'host' in servStatus and\
                     servStatus['host'] == src_host and\
@@ -131,30 +131,30 @@ class SvtMobilityTester(svt_tester_base.SvtTesterBase):
                     to_be_migrated.append(vm)
                     if len(to_be_migrated) == max_migrations:
                         break
-            print '.',
+            print('.', end=' ')
             count += 1
             if count == 80:
-                print ''
+                print('')
                 count = 0
 
         if not to_be_migrated:
-            print ''
-            print 'No Servers found starting with {0} for host {1}:', \
-                str(server_name_prefix, src_host)
+            print('')
+            print('No Servers found starting with {0} for host {1}:', \
+                str(server_name_prefix, src_host))
         else:
-            print ''
-            print 'to_be_migrated=', str(to_be_migrated)
+            print('')
+            print('to_be_migrated=', str(to_be_migrated))
         try:
             error_servers, success_servers =\
                 self.execute_migrations(to_be_migrated,
                                     concurrent_migrations,
                                     max_migrations, src_host, dest_host, sm)
-        except HttpError, e:
-            print 'HTTP Error: {0}'.format(e.body)
+        except HttpError as e:
+            print('HTTP Error: {0}'.format(e.body))
             os._exit(1)
 
-        print 'error_servers=', str(error_servers)
-        print 'success_servers=', str(success_servers)
+        print('error_servers=', str(error_servers))
+        print('success_servers=', str(success_servers))
 
     def execute_migrations(self, to_be_migrated, concurrent_migrations,
                            max_migrations, src_host, dest_host, sm):
@@ -172,7 +172,7 @@ class SvtMobilityTester(svt_tester_base.SvtTesterBase):
             # request as many deploys as possible to meet the concurrent value
             while concurrent_running < concurrent_migrations and \
                 to_be_migrated[:]:
-                print 'concurrent_running', concurrent_running
+                print('concurrent_running', concurrent_running)
                 newCargo = {}
                 newCargo['server'] = to_be_migrated.pop(0)
                 newCargo['dest_host'] = dest_host
@@ -181,15 +181,15 @@ class SvtMobilityTester(svt_tester_base.SvtTesterBase):
                                        'cargo': newCargo})
                 concurrent_running += 1
                 migrations_requested += 1
-                print '***Migrating:{0}'.\
-                    format(newCargo['server']['name'])
+                print('***Migrating:{0}'.\
+                    format(newCargo['server']['name']))
 
             for work_item in work_item_list:
                 currentState = work_item['state']
                 currentCargo = work_item['cargo']
                 if sm.is_end_state(currentState):
                     work_item_list.pop(0)
-                    print 'work_item finished', str(work_item)
+                    print('work_item finished', str(work_item))
                     if currentState == ERROR_STATE:
                         error_servers.append(currentCargo['server'])
                     elif work_item['state'] == END_STATE:
@@ -198,7 +198,7 @@ class SvtMobilityTester(svt_tester_base.SvtTesterBase):
                 # get updated state and cargo
                 (nextState, nextCargo) = sm.step(currentState, currentCargo)
                 if nextState != currentState:
-                    print '{0} -> {1}'.format(currentState, nextState)
+                    print('{0} -> {1}'.format(currentState, nextState))
                 # update work_item
                 work_item['state'] = nextState
                 work_item['cargo'] = nextCargo
@@ -214,10 +214,10 @@ class SvtMobilityTester(svt_tester_base.SvtTesterBase):
         for i in range(5):
             try:
                 Utils.migrate_server_1(token, novaUrl, server, to_host)
-                print '-{0}-Migrate Request for Server named {1}'.\
-                    format(myState, server['name'])
+                print('-{0}-Migrate Request for Server named {1}'.\
+                    format(myState, server['name']))
                 break
-            except HttpError, e:
+            except HttpError as e:
                 raise e
         return (MIGRATING_STATE, cargo)
 
@@ -228,18 +228,18 @@ class SvtMobilityTester(svt_tester_base.SvtTesterBase):
             servStatus = Utils.get_server_status_dict(self.authent_id,
                                                   self.novaUrl,
                                                   server)
-        except HttpError, e:
-            print 'HTTP Error: {0}'.format(e.body)
+        except HttpError as e:
+            print('HTTP Error: {0}'.format(e.body))
             os._exit(1)
 
         if not servStatus:
-            print '-{0}-Server {1} Error: Could not get Server Status'.\
-                format(myState, server['name'])
+            print('-{0}-Server {1} Error: Could not get Server Status'.\
+                format(myState, server['name']))
             return (ERROR_STATE, cargo)
 
         if not 'servStatus' in server:
-            print '-{0}-Server {1}: {2}'.format(myState, server['name'],
-                                                servStatus)
+            print('-{0}-Server {1}: {2}'.format(myState, server['name'],
+                                                servStatus))
             server['servStatus'] = servStatus
             cargo['server'] = server
         else:
@@ -249,8 +249,8 @@ class SvtMobilityTester(svt_tester_base.SvtTesterBase):
             status_changed = self.isStatusChanged(key_list, prevServStatus,
                                              servStatus)
             if status_changed:
-                print '-{0}-Server {1}: {2}'.format(myState, server['name'],
-                                                    servStatus)
+                print('-{0}-Server {1}: {2}'.format(myState, server['name'],
+                                                    servStatus))
                 server['servStatus'] = servStatus
                 cargo['server'] = server
 
@@ -259,16 +259,16 @@ class SvtMobilityTester(svt_tester_base.SvtTesterBase):
             servStatus['health_value'] == 'OK' and\
             servStatus['power_state'] == 4:
             if servStatus['host'] != cargo['src_host']:
-                print 'Migration complete for Server:{0}'.format(server['name'])
+                print('Migration complete for Server:{0}'.format(server['name']))
                 return (MIGRATION_COMPLETE_STATE, cargo)
             else:
         # migration actually failed but state is set back to original
-                print '-{0}-Server {1} s not migrated'.\
-                    format(myState, server['name'])
+                print('-{0}-Server {1} s not migrated'.\
+                    format(myState, server['name']))
                 return (ERROR_STATE, cargo)
         elif servStatus and servStatus['vm_state'] == 'error':
-            print '-{0}-Server {1} went to Error State while migrating'.\
-                format(myState, server['name'])
+            print('-{0}-Server {1} went to Error State while migrating'.\
+                format(myState, server['name']))
             return (ERROR_STATE, cargo)
         else:
             return (myState, cargo)
@@ -277,11 +277,11 @@ class SvtMobilityTester(svt_tester_base.SvtTesterBase):
         return (END_STATE, cargo)
 
     def end_transition(self, cargo):
-        print 'Reached the End'
+        print('Reached the End')
         return (END_STATE, cargo)
 
     def error_transition(self, cargo):
-        print 'Error transition'
+        print('Error transition')
         return (ERROR_STATE, cargo)
 
     def isStatusChanged(self, key_list, prev, current):

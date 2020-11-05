@@ -15,7 +15,7 @@ from rest_framework import novaUtils
 from rest_framework import cinderUtils
 from rest_framework.restUtils import HttpError
 import time
-import Utils
+from . import Utils
 from datetime import datetime
 import pprint
 import fnmatch
@@ -39,10 +39,10 @@ class SvtVolumeTester(svt_tester_base.SvtTesterBase):
             volumeTypeList = volumeType['volume_types']
         if volumeTypeList:
             for type in volumeTypeList:
-                print 'name=', type['name']
-                print 'id=', type['id']
+                print('name=', type['name'])
+                print('id=', type['id'])
 
-        print 'Obtaining the volume List...to be deleted'
+        print('Obtaining the volume List...to be deleted')
 
         try:
             _, volumesDict = cinderUtils.listVolumeDetails(cinderUrl,
@@ -55,27 +55,27 @@ class SvtVolumeTester(svt_tester_base.SvtTesterBase):
 
             if volumesDict:
                 volumeList = volumesDict['volumes']
-                print 'Printing the volumeList =', volumeList
+                print('Printing the volumeList =', volumeList)
                 #print "harsha_____________________________"
             if volumeList:
                 for volume in volumeList:
                     volume_name = volume['name']
                     if (fnmatch.fnmatch(volume_name.upper(),'*DND*')):
                         notto_be_deleted.append(volume)
-                        print 'not to be deleted since start with dnd'
+                        print('not to be deleted since start with dnd')
                     else:
                         to_be_deleted.append(volume)
 
             if to_be_deleted:
                for vol in to_be_deleted:
-                   print 'name=', vol['name'], 'id=', vol['id']
+                   print('name=', vol['name'], 'id=', vol['id'])
                    volume_id_list.append({'id': vol['id']})
             get_deleted_volume_list(cinderUrl, authTokenId, volume_id_list)
 
-            print 'The number of volumes in the volume list is %d' % len(volume_id_list)
+            print('The number of volumes in the volume list is %d' % len(volume_id_list))
 
-        except HttpError, e:
-            print 'HTTP Error: {0}'.format(e.body)
+        except HttpError as e:
+            print('HTTP Error: {0}'.format(e.body))
             os._exit(1)
 def get_deleted_volume_list(cinderUrl, authTokenId, volume_id_list):
     #Below varibles are used for Report generation
@@ -92,29 +92,29 @@ def get_deleted_volume_list(cinderUrl, authTokenId, volume_id_list):
     Utils.Overwrite_File(filePath, "Delete_Volumes")
     i = 0
     for vols in volume_id_list:
-        print 'Getting the vols details', vols
-        print 'The Deleted Volume ids =', vols['id']
+        print('Getting the vols details', vols)
+        print('The Deleted Volume ids =', vols['id'])
         try:
             deleteResponse, imageBody = \
                 cinderUtils.deleteVolume(cinderUrl, authTokenId, vols['id'])
-        except HttpError, e:
-            print 'HTTP Error: {0}'.format(e.body)
-            print "There is some issue with deleting this volume, continuing with next volume"
+        except HttpError as e:
+            print('HTTP Error: {0}'.format(e.body))
+            print("There is some issue with deleting this volume, continuing with next volume")
             Flag1 = 1
         if i is 5:
             time.sleep(20)
             i = 0
-        print 'delete http response =', deleteResponse
-        print 'delete response=', imageBody
+        print('delete http response =', deleteResponse)
+        print('delete response=', imageBody)
         i = i + 1
-    print 'Please wait concurrent deletes are In progress'
+    print('Please wait concurrent deletes are In progress')
     time.sleep(30)
 
     if Flag1 == 1:
-        print "Some of volume deletes are failed, please check the code"
+        print("Some of volume deletes are failed, please check the code")
         os._exit(1)
     else:
-        print "All volumes are Successfully deleted"
+        print("All volumes are Successfully deleted")
 
 if __name__ == '__main__':
     svt_tester_base.main()
