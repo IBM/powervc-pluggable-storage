@@ -354,17 +354,21 @@ def conn_attach_vols(authTokenId, novaUrl, volumes_to_attach, con_attach):
         if ((i == max) and (max-i) == 0):
             print('Total number of volumes to attach for each iteration is %d' % i)
             return i
-            curr_attach_vol = []
-            min = con_attach
-            if ((max-i) < min):
-                min=max-i
-            for j in range(0, min):
-                curr_attach_vol.append(volumes_to_attach[i+j])
-                print("The current started servers", curr_attach_vol)
-                conn_attach_vols_sub(authTokenId, novaUrl, curr_attach_vol)
-                sleep(30)
-                i += min
-    return i
+        curr_attach_vol = []
+        min = con_attach
+        if ((max-i) < min):
+            min=max-i
+        for j in range(0, min):
+            curr_attach_vol.append(volumes_to_attach[i+j])
+            print("The current started servers", curr_attach_vol)
+            conn_attach_vols_sub(authTokenId, novaUrl, curr_attach_vol)
+            sleep(30)
+            i += min
+    if i>0:
+        for sub in volumes_to_attach:
+            attach_number =len(sub['vol_props'])
+        print("attach_number:", attach_number)
+        return attach_number
 
 def conn_attach_vols_sub(authTokenId, novaUrl, curr_attach_vol):
     for vol_det in curr_attach_vol:
