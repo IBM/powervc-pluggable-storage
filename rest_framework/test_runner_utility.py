@@ -9,7 +9,7 @@
 #See the License for the specific language governing permissions and
 #limitations under the License.
 
-import httplib
+import http.client
 import importlib
 import inspect
 import traceback
@@ -44,7 +44,7 @@ def find_python_objects(dotted_name):
     while len(dotted_name) > 0:
         try:
             module = importlib.import_module(dotted_name)
-        except ImportError, e:
+        except ImportError as e:
             if first_import_warning_msg is None:
                 first_import_warning_msg = (
                     inspect.stack()[0][3] + ": '" + dotted_name
