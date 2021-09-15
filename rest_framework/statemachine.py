@@ -32,11 +32,10 @@ class StateMachine():
         try:
             handler = self.handlers[self.startState]
         except:
-            raise "InitializationError", "must call .set_start() before .run()"
+            raise InitializationError("must call .set_start() before .run()")
 
         if not self.endStates:
-            raise "InitializationError", \
-                "at least one state must be an end_state"
+            raise InitializationError("at least one state must be an end_state")
 
         while 1:
             (newState, cargo) = handler(cargo)
@@ -49,11 +48,10 @@ class StateMachine():
         try:
             self.handlers[self.startState]
         except:
-            raise "InitializationError", "must call .set_start() before .run()"
+            raise InitializationError("must call .set_start() before .run()")
 
         if not self.endStates:
-            raise "InitializationError", \
-                "at least one state must be an end_state"
+            raise InitializationError("at least one state must be an end_state")
 
     def is_end_state(self, state):
         if upper(state) in self.endStates:
@@ -63,9 +61,9 @@ class StateMachine():
     def step(self, state, cargo):
         handler = self.handlers[upper(state)]
         if handler is None:
-            print 'handlers', str(self.handlers)
-            print 'handler', handler
+            print('handlers', str(self.handlers))
+            print('handler', handler)
         if state is None:
-            print 'state', state
+            print('state', state)
         (newState, cargo) = handler(cargo)
         return (newState, cargo)
