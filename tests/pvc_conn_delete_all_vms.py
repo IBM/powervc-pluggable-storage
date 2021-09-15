@@ -15,7 +15,7 @@ from rest_framework.restUtils import HttpError
 import sys
 import time
 import os
-import Utils
+from . import Utils
 SLEEP_INTERVAL=5
 #300 seconds / 5 minmutes
 TIMEOUT=300
@@ -55,18 +55,18 @@ class SvtDiscoveryTester(svt_tester_base.SvtTesterBase):
         options_missing = False
         for option in self.required_options:
             if not self.config.has_option(self.config_section, option):
-                print 'option=', option, 'not found in configuration file'
+                print(('option=', option, 'not found in configuration file'))
                 options_missing = True
         if options_missing:
-            print 'Provide missing options to the configuration file.'
+            print('Provide missing options to the configuration file.')
             os._exit(1)
 
         concurrent_deletes = self.config_get(CONCURRENT_DELETES)
-        print CONCURRENT_DELETES, concurrent_deletes
+        print(CONCURRENT_DELETES, concurrent_deletes)
 
         authTokenId = self.authent_id
 
-        print 'Obtaining the Managed Server List...'
+        print('Obtaining the Managed Server List...')
         novaUrl = self.getServiceUrl('compute')
         errored_servers = []
         stopped_servers = []
@@ -81,18 +81,18 @@ class SvtDiscoveryTester(svt_tester_base.SvtTesterBase):
                     server_list.append({'name': server['name'],'id': server['id']})
 
             vm_deleted += conc_delete_servers(authTokenId, novaUrl, server_list, concurrent_deletes)
-            print "Total number of VMs deleted: %d", len(vm_deleted) 
-        except HttpError, e:
-            print 'HTTP Error: {0}'.format(e.body)
+            print("Total number of VMs deleted: %d", len(vm_deleted))
+        except HttpError as e:
+            print('HTTP Error: {0}'.format(e.body))
             os._exit(1)
 
 def conc_delete_servers(authTokenId, novaUrl, error_server_list, concurrent_deletes):
         maxm = len(error_server_list)
         i = 0
         deleted_servers = []
-        while i < range(len(error_server_list)):
+        while i < list(range(len(error_server_list))):
                 if ((i == maxm) and (maxm-i) == 0):
-                        print 'Total number of VMs deleted for each iteration is %d' % i
+                        print('Total number of VMs deleted for each iteration is %d' % i)
                         break
                 curr_servers_to_be_deleted = []
                 minm = concurrent_deletes
@@ -102,13 +102,13 @@ def conc_delete_servers(authTokenId, novaUrl, error_server_list, concurrent_dele
 
                 for j in range(0, minm):
                     curr_servers_to_be_deleted.append(error_server_list[i+j])
-                    print "The current deleted servers", curr_servers_to_be_deleted
+                    print("The current deleted servers", curr_servers_to_be_deleted)
 
                 deleted_servers += get_deleted_server_list(authTokenId, novaUrl, curr_servers_to_be_deleted)
                 if not deleted_servers:
-                        print 'no servers found for deletion, exiting'
+                        print('no servers found for deletion, exiting')
                         os._exit(1)
-                print 'Deleted Servers=', str(deleted_servers)
+                print('Deleted Servers=', str(deleted_servers))
                 i += minm
         return deleted_servers
 
@@ -117,14 +117,14 @@ def get_deleted_server_list(authTokenId, novaUrl, curr_servers_to_be_deleted):
     deleted_servers = []
     try:
         for server in curr_servers_to_be_deleted:
-            print 'Deleting server:name=', server['name'], 'id=', server['id']
+            print('Deleting server:name=', server['name'], 'id=', server['id'])
             deleteResponse, serverBody = \
                 novaUtils.deleteServer(novaUrl, authTokenId, server['id'])
-            print 'delete http response =', deleteResponse
-            print 'delete response=', serverBody
+            print('delete http response =', deleteResponse)
+            print('delete response=', serverBody)
             deleted_servers.append(server)
-    except HttpError, e:
-        print 'HTTP Error: {0}'.format(e.body)
+    except HttpError as e:
+        print('HTTP Error: {0}'.format(e.body))
         Flag1 = 1
     time_out = 0
     while (len(curr_servers_to_be_deleted) is not 0):
@@ -136,18 +136,18 @@ def get_deleted_server_list(authTokenId, novaUrl, curr_servers_to_be_deleted):
                 servStatus = Utils.get_server_status_dict(authTokenId,
                                                       novaUrl,
                                                       server)
-            except HttpError, e:
+            except HttpError as e:
                 if e.code == 404:
-                    print 'Deletion complete for Server:{0}'.\
-                          format(server['name'])
+                    print('Deletion complete for Server:{0}'.\
+                          format(server['name']))
                     del_list.append(server)
         if time_out is 2000:
-            print "Delete wait is timed out, proceeding with next set of delete, please kill \
-                   the process if you don't want to continue"
+            print("Delete wait is timed out, proceeding with next set of delete, please kill \
+                   the process if you don't want to continue")
             time.sleep(50)
             break
         for server in del_list:
-            curr_servers_to_be_deleted.remove(server)      
+            curr_servers_to_be_deleted.remove(server)
     return deleted_servers
 
 if __name__ == '__main__':
