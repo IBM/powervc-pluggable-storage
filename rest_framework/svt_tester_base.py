@@ -14,7 +14,7 @@ import unittest
 from datetime import datetime
 from datetime import timedelta
 from rest_framework import svt_test_runner
-from Utils import DEFAULT_TIMEOUT_SECS, DEFAULT_SLEEP_INTERVAL_SECS
+from .Utils import DEFAULT_TIMEOUT_SECS, DEFAULT_SLEEP_INTERVAL_SECS
 from rest_framework.svt_test_runner import SvtTesterContext
 
 from collections import namedtuple
@@ -185,10 +185,10 @@ class SvtTesterBase(unittest.TestCase):
     # Utility Methods
 
     def hmc_extract_uuid_list(self, hmc_list):
-        return filter(lambda hmc: hmc['hmc_uuid'], hmc_list)
+        return [hmc for hmc in hmc_list if hmc['hmc_uuid']]
 
     def host_extract_compute_node_list(self, host_list):
-        return filter(lambda host: host['service'] == 'compute', host_list)
+        return [host for host in host_list if host['service'] == 'compute']
 
 
 def main():
