@@ -33,35 +33,35 @@ class SVTTTVValidator(svt_tester_base.SvtTesterBase):
 
         list_host_output=novaUtils.listHosts(novaUrl,self.authent_id)[1]
         all_hosts = list_host_output['hosts']
-        print all_hosts
+        print(all_hosts)
         for host_record in all_hosts:
             if host_record['service'] == 'compute':
                 count = count +1
-        print " Total Number of Hosts =", count
+        print(" Total Number of Hosts =", count)
         total_time_out = time_out_value * count
 
         """ run TTV or verify environment and display results"""
 
         ttv_run_op =validatorUtils.initValidationRun(validatorUrl,auth_token)
-        print " ----------waiting for TTV to complete---------"
+        print(" ----------waiting for TTV to complete---------")
         time.sleep(total_time_out)
         ttv_results = validatorUtils.getValidationResult(validatorUrl,auth_token)
 
         output= ttv_results[1]['prior-results'][0]['check-groups']
 
-        print "\n"
+        print("\n")
         for item in output:
             validations = output[item]['checks']
             for validation in validations:
                 if check_status in validation['status']:
                     ttv_error_flag = True
-                    print output[item]['group-description']+" ----- "+validation['ip'] +" ----- " +validation['status'] + " ----- " + validation['msg']
+                    print(output[item]['group-description']+" ----- "+validation['ip'] +" ----- " +validation['status'] + " ----- " + validation['msg'])
 
         if ttv_error_flag:
-            print "FAIL: TTV reported errors. Please check your environment"
+            print("FAIL: TTV reported errors. Please check your environment")
             os._exit(1)
         else:
-            print "SUCCESS: TTV run is successful without any errors"
+            print("SUCCESS: TTV run is successful without any errors")
             os._exit(0)
 
 if __name__ == '__main__':
