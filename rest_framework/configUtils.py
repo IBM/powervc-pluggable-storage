@@ -9,7 +9,7 @@
 #See the License for the specific language governing permissions and
 #limitations under the License.
 
-from ConfigParser import NoOptionError
+from configparser import NoOptionError
 import traceback
 
 from rest_framework import novaUtils
@@ -37,20 +37,20 @@ def test_reg(self):
         neutronUrl = self.getServiceUrl('network')
 
         HMC_Id = test_register_hmc(self)
-        print "Hello"
-        print "HMC Registration"
+        print("Hello")
+        print("HMC Registration")
 
         Net_Cr = test_create_network(self)
-        print Net_Cr
+        print(Net_Cr)
 
-        print HMC_Id
+        print(HMC_Id)
         Host_Reg = test_host_reg(self)
-        print "Host Regsitration"
-        print Host_Reg
+        print("Host Regsitration")
+        print(Host_Reg)
         Net_Cr = test_create_network(self)
-        print Net_Cr
+        print(Net_Cr)
         SVC_reg = test_svc_reg(self)
-        print "SVC Regsitration"
+        print("SVC Regsitration")
 
 
 def register_hmc(novaUrl, token, hmc_ip_list, hmc_userid_list, hmc_password_list, hmc_disp_name):
@@ -60,17 +60,17 @@ def register_hmc(novaUrl, token, hmc_ip_list, hmc_userid_list, hmc_password_list
                     'password': hmc_password_list,
                     'hmc_display_name': hmc_disp_name
                     }
-        print "Registering HMC:", str(hmcProps)
-        print token
+        print(("Registering HMC:", str(hmcProps)))
+        print(token)
 
         address = openstackUtils.parseAddress(novaUrl)
         url = openstackUtils.parseBaseURL(novaUrl, address) + '/ibm-hmcs'
         putBody = json.dumps({'hmc': {'registration': hmcProps}})
-        print putBody
+        print(putBody)
         headers = {'X-Auth-Token': token}
         registrnRespns, registrnRespnsBodyJSON = restUtils.postJSON(address, url, putBody, headers)
 
-        print "Registration of HMC response:"
+        print("Registration of HMC response:")
 
 
         return str(registrnRespnsBodyJSON)
@@ -92,10 +92,10 @@ def register_host(novaUrl, token, hmc_disp_name, host_name_list, host_display_na
                      'host_display_name': host_display_name,
                      'hmc_uuids': [hmc_uuid]
                      }
-            print hostProps
+            print(hostProps)
             registrnRespns, registrnRespnsBodyJSON = createHost(novaUrl, token, hostProps)
-            print "Registration of Host response:"
-            print str(registrnRespnsBodyJSON)
+            print("Registration of Host response:")
+            print((str(registrnRespnsBodyJSON)))
 
         return registrnRespns
 
@@ -113,8 +113,8 @@ def register_kvmhost(novaUrl, token, host_ip, host_display_name, userid, passwor
                       }
 
         registrnRespns, registrnRespnsBodyJSON = createHost(novaUrl, token, hostProps)
-        print "Registration of Host response:"
-        print str(registrnRespnsBodyJSON)
+        print("Registration of Host response:")
+        print((str(registrnRespnsBodyJSON)))
 
         return registrnRespns
 
@@ -147,7 +147,7 @@ def create_network(neutronUrl, token, network_name, vlan_id, cidr_ip, ip_version
 
 
         registrnRespns, registrnRespnsBodyJSON = quantumUtils.createSubnet(neutronUrl, token, subnetProps)
-        print str(registrnRespnsBodyJSON)
+        print((str(registrnRespnsBodyJSON)))
         return registrnRespns
 
 def svc_reg(cinderUrl, token, svc_host_type, svc_disp_name, svc_access_ip, svc_pool_name, svc_userid, svc_pwd):
@@ -206,21 +206,21 @@ def liststorage(cinderUrl, token):
 def onboard_vol(cinderUrl, token, volume_id, host_name):
     address = openstackUtils.parseAddress(cinderUrl)
     url = openstackUtils.parseBaseURL(cinderUrl, address) + '/os-hosts/' + host_name + '/onboard'
-    print url
+    print(url)
     headers = {'X-Auth-Token': token}
     volProps = {"volumes": [volume_id]}
     postbody = json.dumps(volProps)
-    print postbody
+    print(postbody)
     registrnRespns, registrnRespnsBodyJSON = restUtils.postJSON(address, url, postbody, headers)
 
 def unmanage_vol(cinderUrl, token, volume_id, host_name):
     address = openstackUtils.parseAddress(cinderUrl)
     url = openstackUtils.parseBaseURL(cinderUrl, address) + '/os-hosts/' + host_name + '/unmanage'
-    print url
+    print(url)
     headers = {'X-Auth-Token': token}
     volProps = {"volumes": [volume_id]}
     postbody = json.dumps(volProps)
-    print postbody
+    print(postbody)
     registrnRespns, registrnRespnsBodyJSON = restUtils.postJSON(address, url, postbody, headers)
 
 
@@ -234,8 +234,8 @@ def getHMC_uuid(hmc_name, novaUrl, address, token):
 
         for i in dict['hmcs']:
 
-            print i['hmc_display_name']
-            print hmc_name
+            print((i['hmc_display_name']))
+            print(hmc_name)
             if i['hmc_display_name'] == hmc_name:
                 return i['hmc_uuid']
         return 0
@@ -243,15 +243,15 @@ def getHMC_uuid(hmc_name, novaUrl, address, token):
 def createHost(novaUrl, token, hostProps):
 
     reg_key = 'registration'
-    print reg_key
+    print(reg_key)
 
     address = openstackUtils.parseAddress(novaUrl)
     url = openstackUtils.parseBaseURL(novaUrl, address) + '/os-hosts'
     postBody = json.dumps({'host': { 'registration': hostProps}})
     headers = {'X-Auth-Token': token }
-    print "post body", postBody
-    print url
-    print headers
+    print(("post body", postBody))
+    print(url)
+    print(headers)
     return restUtils.postJSON(address, url, postBody, headers)
 
 def cre_flavor(token, novaUrl, fla_name, mem, vcpu, proc_unit, min_vcpu, max_vcpu, min_mem, max_mem, min_proc, max_proc, SPP):
@@ -281,7 +281,7 @@ def cre_flavor(token, novaUrl, fla_name, mem, vcpu, proc_unit, min_vcpu, max_vcp
 
 
     postBody = json.dumps({'flavor': flavor_props })
-    print postBody
+    print(postBody)
     headers =  {'X-Auth-Token': token }
     return restUtils.postJSON(address, url, postBody, headers)
 
@@ -305,7 +305,7 @@ def create_scg(token, novaUrl, scg_name, vios1_id, vios2_id):
 
 
     postBody = json.dumps({'storage_connectivity_group': scg_props })
-    print postBody
+    print(postBody)
     headers =  {'X-Auth-Token': token }
     return restUtils.postJSON(address, url, postBody, headers)
 
