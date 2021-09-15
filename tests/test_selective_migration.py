@@ -258,13 +258,13 @@ class SvtMobilityTester(svt_tester_base.SvtTesterBase):
             servStatus['health_value'] == 'OK' and\
             servStatus['power_state'] == 1:
             if servStatus['host'] != cargo['src_host']:
-            	print('Migration complete for Server:{0}'.format(server['name']))
-            	return (MIGRATION_COMPLETE_STATE, cargo)
+                print('Migration complete for Server:{0}'.format(server['name']))
+                return (MIGRATION_COMPLETE_STATE, cargo)
             else:
-		# migration actually failed but state is set back to original
-            	print('-{0}-Server {1} s not migrated'.\
-                	format(myState, server['name']))
-            	return (ERROR_STATE, cargo)
+                # migration actually failed but state is set back to original
+                print('-{0}-Server {1} s not migrated'.\
+                        format(myState, server['name']))
+                return (ERROR_STATE, cargo)
         elif servStatus and servStatus['vm_state'] == 'error':
             print('-{0}-Server {1} went to Error State while migrating'.\
                 format(myState, server['name']))
