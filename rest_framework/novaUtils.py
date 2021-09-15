@@ -144,9 +144,9 @@ def bulkAttachVolume(novaUrl, token, volumeProps, vm_id):
                      vm_id)
     postBody = json.dumps({'bulkVolumeAttach':{'volumeAttachment':volumeProps}})
     headers = {'X-Auth-Token': token}
-    print "Attach Request Details"
-    print address+url
-    print postBody
+    print("Attach Request Details")
+    print((address+url))
+    print(postBody)
     return restUtils.postJSON(address, url, postBody, headers)
 
 def bulkCreateAttachVolume(novaUrl, token, volumeProps, vm_id):
@@ -155,9 +155,9 @@ def bulkCreateAttachVolume(novaUrl, token, volumeProps, vm_id):
                      vm_id)
     postBody = json.dumps({'bulkVolumeAttach':{'volumeAttachment': [volumeProps]}})
     headers = {'X-Auth-Token': token}
-    print "Attach Request Details"
-    print address+url
-    print postBody
+    print("Attach Request Details")
+    print((address+url))
+    print(postBody)
     return restUtils.postJSON(address, url, postBody, headers)
 
 def listHostStorageTopo(novaUrl, token):
@@ -443,37 +443,37 @@ def addvNIC(novaUrl, quantumUrl, token, serverid, network_id, ipaddr, subnet_id)
     address = openstackUtils.parseAddress(novaUrl)
     #print "address : ", address
     port_resp, body_json = get_port(token, quantumUrl)
-    print ipaddr
+    print(ipaddr)
     #print len(body_json['ports'])
     #print body_json['ports'][93]['fixed_ips'][0]['ip_address']
     temp = []
     port_id = 0
     for i in range(len(body_json['ports'])):
-        print i
+        print(i)
         if body_json['ports'][i]['fixed_ips']:
             ip = body_json['ports'][i]['fixed_ips'][0]['ip_address']
         #print ip
             if ip == ipaddr:
                 port_id = body_json['ports'][i]['id']
-                print "ip is found"
+                print("ip is found")
                 break
             else:
-                print "port not present"
+                print("port not present")
 
-    print port_id
+    print(port_id)
     if port_id == 0:
         port_resp, bdy_json = create_port(token, quantumUrl, network_id, ipaddr, subnet_id)
         port_id = bdy_json['port']['id']
-    print "Port response", port_resp
-    print "portId", port_id
+    print(("Port response", port_resp))
+    print(("portId", port_id))
     url = openstackUtils.parseBaseURL(novaUrl, address) + \
         '/servers/' + serverid + '/os-interface'
-    print "url : ", url
+    print(("url : ", url))
     postBody = json.dumps({"interfaceAttachment": \
                            {"port_id": port_id}})
 
 
-    print "postbody:", postBody
+    print(("postbody:", postBody))
     headers = {'X-Auth-Token': token}
     return restUtils.postJSON(address, url, postBody, headers)
     #print '\nReturning from addvNic function..\n'
@@ -483,37 +483,37 @@ def addSRIOVvNIC(novaUrl, quantumUrl, token, serverid, network_id, ipaddr, subne
     address = openstackUtils.parseAddress(novaUrl)
     #print "address : ", address
     port_resp, body_json = get_port(token, quantumUrl)
-    print ipaddr
+    print(ipaddr)
     #print len(body_json['ports'])
     #print body_json['ports'][93]['fixed_ips'][0]['ip_address']
     temp = []
     port_id = 0
     for i in range(len(body_json['ports'])):
-        print i
+        print(i)
         if body_json['ports'][i]['fixed_ips']:
             ip = body_json['ports'][i]['fixed_ips'][0]['ip_address']
         #print ip
             if ip == ipaddr:
                 port_id = body_json['ports'][i]['id']
-                print "ip is found"
+                print("ip is found")
                 break
             else:
-                print "port not present"
+                print("port not present")
 
-    print port_id
+    print(port_id)
     if port_id == 0:
         port_resp, bdy_json = create_SRIOV_port(token, quantumUrl, network_id, ipaddr, subnet_id, sriov_vnic_required_vfs, sriov_capacity)
         port_id = bdy_json['port']['id']
-    print "Port response", port_resp
-    print "portId", port_id
+    print(("Port response", port_resp))
+    print(("portId", port_id))
     url = openstackUtils.parseBaseURL(novaUrl, address) + \
         '/servers/' + serverid + '/os-interface'
-    print "url : ", url
+    print(("url : ", url))
     postBody = json.dumps({"interfaceAttachment": \
                            {"port_id": port_id}})
 
 
-    print "postbody:", postBody
+    print(("postbody:", postBody))
     headers = {'X-Auth-Token': token}
     return restUtils.postJSON(address, url, postBody, headers)
 
@@ -524,7 +524,7 @@ def addvNIC_dy (novaUrl, token, serverid, network_id):
         '/servers/' + serverid + '/os-interface'
     postBody = json.dumps({"interfaceAttachment": {"net_id": network_id}})
     headers = {'X-Auth-Token': token}
-    print '\nExiting from addvNic function..\n'
+    print('\nExiting from addvNic function..\n')
     return restUtils.postJSON(address, url, postBody, headers)
 
 """ Fucntion to remove an existing vNIC from a Virtual Machine """
@@ -542,7 +542,7 @@ def listvNIC(novaUrl, token, serverid):
     return restUtils.getJSON(address, url, headers)
 
 def create_port(token, quantumUrl, network_id, ipaddr, subnet_id):
-    print "Creating port for IP address"
+    print("Creating port for IP address")
     address = openstackUtils.parseAddress(quantumUrl)
     url = openstackUtils.parseBaseURL(quantumUrl, address) + '/v2.0/ports'
     postBody = json.dumps({"port":{"network_id": network_id, "fixed_ips":[{"subnet_id": subnet_id, "ip_address": ipaddr}]}})
@@ -551,7 +551,7 @@ def create_port(token, quantumUrl, network_id, ipaddr, subnet_id):
 
 ## This function used to create SRIOV ports
 def create_SRIOV_port(token, quantumUrl, network_id, ipaddr, subnet_id, sriov_vnic_required_vfs, sriov_capacity):
-    print "Creating port for IP address"
+    print("Creating port for IP address")
     address = openstackUtils.parseAddress(quantumUrl)
     url = openstackUtils.parseBaseURL(quantumUrl, address) + '/v2.0/ports'
     sriov_port_Props = {
@@ -828,17 +828,17 @@ def register_hmc(novaUrl, token, hmc_ip_list, hmc_userid_list, hmc_password_list
                     'password': hmc_password_list,
                     'hmc_display_name': hmc_disp_name
                     }
-        print "Registering HMC:", str(hmcProps)
-        print token
+        print(("Registering HMC:", str(hmcProps)))
+        print(token)
 
         address = openstackUtils.parseAddress(novaUrl)
         url = openstackUtils.parseBaseURL(novaUrl, address) + '/ibm-hmcs'
         putBody = json.dumps({'hmc': {'registration': hmcProps}})
-        print putBody
+        print(putBody)
         headers = {'X-Auth-Token': token}
         registrnRespns, registrnRespnsBodyJSON = restUtils.postJSON(address, url, putBody, headers)
 
-        print "Registration of HMC response:"
+        print("Registration of HMC response:")
         return str(registrnRespnsBodyJSON)
 
 
@@ -859,10 +859,10 @@ def register_host(novaUrl, token, hmc_disp_name, host_name_list, host_display_na
                      'host_display_name': host_display_name,
                      'hmc_uuids': [hmc_uuid]
                      }
-            print hostProps
+            print(hostProps)
             registrnRespns, registrnRespnsBodyJSON = createHost(novaUrl, token, hostProps)
-            print "Registration of Host response:"
-            print str(registrnRespnsBodyJSON)
+            print("Registration of Host response:")
+            print((str(registrnRespnsBodyJSON)))
 
         return registrnRespns
 
@@ -891,8 +891,8 @@ def createComputeTemplateAdvance(novaUrl, token, flavorProps, computeID):
     url = openstackUtils.parseBaseURL(novaUrl, address) + '/flavors/' + computeID + '/os-extra_specs'
     putBody = json.dumps({'extra_specs': flavorProps})
     headers = {'X-Auth-Token': token}
-    print url
-    print putBody
+    print(url)
+    print(putBody)
     return restUtils.postJSON(address, url, putBody, headers)
 
 # nova ssh key pair generation
@@ -908,14 +908,14 @@ def addPPTRatioToFlavor(novaUrl, token, flavorID, pptRatiovalue):
     address = openstackUtils.parseAddress(novaUrl)
     url = openstackUtils.parseBaseURL(novaUrl, address) + '/flavors/' + flavorID + '/os-extra_specs' + '/powervm:ppt_ratio'
     postBody = json.dumps({'powervm:ppt_ratio': pptRatiovalue})
-    print url
-    print postBody
+    print(url)
+    print(postBody)
     headers = {'X-Auth-Token': token}
     return restUtils.putJSON(address, url, postBody, headers)
 
 def deletePPTRatioToFlavor(novaUrl, token, flavorID):
     address = openstackUtils.parseAddress(novaUrl)
     url = openstackUtils.parseBaseURL(novaUrl, address) + '/flavors/' + flavorID + '/os-extra_specs' + '/powervm:ppt_ratio'
-    print url
+    print(url)
     headers = {'X-Auth-Token': token}
     return restUtils.request('DELETE', address, url, headers)
