@@ -64,8 +64,8 @@ pvc_host_based_conn_start_servers.py : test_1001_host_Based_start_servers
         test_cases=[]
         skip_cases=[]
         config_file = str(sys.argv[2])
-        print "="*50
-        print "Reading Test Suite/n"
+        print(("="*50))
+        print("Reading Test Suite/n")
         suite_file = str(sys.argv[1])
         for line in open(suite_file):
             a = line
@@ -94,9 +94,9 @@ pvc_host_based_conn_start_servers.py : test_1001_host_Based_start_servers
                     test_cases.append(b)
                     skip_cases.append(c)
         if len(scripts) == 0:
-            print "You not provided any inputs, nothing to do"
+            print("You not provided any inputs, nothing to do")
             os._exit(1)
-        print "="*50
+        print("="*50)
         if (len(scripts) == len(test_cases)):
             scripts_status = "<>"*60+"\n"
             scripts_status = scripts_status+" You can find scripts execution status below"+"\n"
@@ -107,7 +107,7 @@ pvc_host_based_conn_start_servers.py : test_1001_host_Based_start_servers
                 now = str(datetime.datetime.now())
                 return_value = self.python_script_runner(scripts[i], test_cases[i], config_file)
                 if return_value == 0:
-                    print "\n Execution Success: "+scripts[i]+"  "+test_cases[i]+"\n"
+                    print("\n Execution Success: "+scripts[i]+"  "+test_cases[i]+"\n")
                     script_name = scripts[i]
                     test_case = test_cases[i]
                     if script_name.lower() == 'WAIT'.lower() and test_case.lower() != 'NONE'.lower():
@@ -119,12 +119,12 @@ pvc_host_based_conn_start_servers.py : test_1001_host_Based_start_servers
                     temp_skip = str(skip_cases[i])
                     if temp_skip.lower() == "SKIP".lower():
                         flag = 2
-                        print scripts[i]+" Script Failed, please check \n Proceeding with next Script since you choose SKIP"
+                        print(scripts[i]+" Script Failed, please check \n Proceeding with next Script since you choose SKIP")
                         scripts_status = scripts_status+"\n Date & Time: "+now+"\n"
                         scripts_status = scripts_status+"\n Script Failed: "+scripts[i]+"\n"+"Skipping Above Failure and Proceeding with Next Script Since You Chosen SKIP Failure \n "
                     else:
                         flag = 1
-                        print scripts[i]+" Script Failed, please check \n"
+                        print(scripts[i]+" Script Failed, please check \n")
                         scripts_status = scripts_status+"\n Date & Time: "+now+"\n"
                         scripts_status = scripts_status+"\n Script Failed: "+scripts[i]+"\n"
                         scripts_status = scripts_status+"\n Smart script stops running, you can fix the issue and retry remaining scripts\n"
@@ -132,47 +132,47 @@ pvc_host_based_conn_start_servers.py : test_1001_host_Based_start_servers
             if flag == 0:
                 scripts_status = scripts_status+"\n Smart Script: Scripts Execution is Success\n"
                 scripts_status = scripts_status+"<>"*60
-                print scripts_status
+                print(scripts_status)
                 os._exit(0)
             elif flag == 2:
                 scripts_status = scripts_status+"\n Smart Script: Scripts Execution is Partially Success\n Please Rerun failed script after fixing issues \n"
                 scripts_status = scripts_status+"<>"*60
-                print scripts_status
+                print(scripts_status)
                 os._exit(0)
             else:
                 scripts_status = scripts_status+"<>"*60
-                print scripts_status
+                print(scripts_status)
                 os._exit(1)
         else:
-            print '\n please check each script have corresponding test cases in the config file'
+            print('\n please check each script have corresponding test cases in the config file')
 
 
     #Python script runner
     def python_script_runner(self, script_name, test_case, config_file):
         if script_name.lower() == 'WAIT'.lower() and test_case.lower() != 'NONE'.lower():
-            print "\n"+":"*130
-            print "\n Waiting "+test_case
+            print("\n"+":"*130)
+            print("\n Waiting "+test_case)
             wait_return= self.wait_time(test_case)
             if wait_return == 1:
-                print "\nWrong Input given for wait time, ignoring wait and proceeding script execution"
+                print("\nWrong Input given for wait time, ignoring wait and proceeding script execution")
             else:
-                print "\nWait is over, proceeding script execution"
+                print("\nWait is over, proceeding script execution")
             return 0
 
         else:
-            print "\n"+":"*130
-            print "\n"*1+"Running python script: "+script_name+"\n"*1
+            print("\n"+":"*130)
+            print("\n"*1+"Running python script: "+script_name+"\n"*1)
             if test_case.lower() == 'NONE'.lower():
                 cmd = 'python'+" -u"+" "+"tests_svt/"+script_name+" "+config_file
             else:
                 cmd = 'python'+" -u"+" "+"tests_svt/"+script_name+" "+"--test="+test_case+" "+config_file
-            print "\n"*1
-            print cmd
+            print("\n"*1)
+            print(cmd)
             try:
                 return_value = subprocess.call(cmd, shell=True)
                 return return_value
             except:
-                print "\nThere is some problem with running the script > "+cmd
+                print("\nThere is some problem with running the script > "+cmd)
                 return 1
 
     # Adding Waiting time
@@ -181,7 +181,7 @@ pvc_host_based_conn_start_servers.py : test_1001_host_Based_start_servers
             time_type=wait_t[-1:]
             time_value=wait_t[:-1]
             if time_type.lower() == "h":
-                print "Waiting "+time_value+" hour"
+                print("Waiting "+time_value+" hour")
                 float_time_value=float(time_value)
                 i=0
                 while i < float_time_value:
@@ -192,13 +192,13 @@ pvc_host_based_conn_start_servers.py : test_1001_host_Based_start_servers
                     i=i+1
                     rem_time= float_time_value - i
                     if rem_time != 0:
-                        print "Waiting another "+str(rem_time)+" hour"
+                        print("Waiting another "+str(rem_time)+" hour")
                     else:
-                        print "Waiting over, continuing with script execution"
+                        print("Waiting over, continuing with script execution")
                 return 0
 
             elif time_type.lower() == "m":
-                print time_value+" minutes"
+                print(time_value+" minutes")
                 float_time_value=float(time_value)
                 i=0
                 while i < float_time_value:
@@ -207,7 +207,7 @@ pvc_host_based_conn_start_servers.py : test_1001_host_Based_start_servers
                 return 0
 
             elif time_type.lower() == "s":
-                print time_value+" seconds"
+                print(time_value+" seconds")
                 float_time_value=float(time_value)
                 time.sleep(float_time_value)
                 return 0
