@@ -14,48 +14,48 @@ from rest_framework import openstackUtils
 import json
 
 def listNetworks(quantumUrl, token) :
-	#print 'ENTER listNetworks'
-	address = openstackUtils.parseAddress(quantumUrl)
-	url = openstackUtils.parseBaseURL(quantumUrl, address) + '/v2.0/networks'
-	headers = {'X-Auth-Token' : token}
-	return restUtils.getJSON(address, url, headers)
+        #print 'ENTER listNetworks'
+        address = openstackUtils.parseAddress(quantumUrl)
+        url = openstackUtils.parseBaseURL(quantumUrl, address) + '/v2.0/networks'
+        headers = {'X-Auth-Token' : token}
+        return restUtils.getJSON(address, url, headers)
 
 def showNetwork(quantumUrl, token, network_id) :
-	#print 'ENTER showNetwork'
-	address = openstackUtils.parseAddress(quantumUrl)
-	url = openstackUtils.parseBaseURL(quantumUrl, address) + '/v2.0/networks/' + network_id
-	headers = {'X-Auth-Token' : token}
-	return restUtils.getJSON(address, url, headers)
+        #print 'ENTER showNetwork'
+        address = openstackUtils.parseAddress(quantumUrl)
+        url = openstackUtils.parseBaseURL(quantumUrl, address) + '/v2.0/networks/' + network_id
+        headers = {'X-Auth-Token' : token}
+        return restUtils.getJSON(address, url, headers)
 
 def createNetwork(quantumUrl, token, networkProps) :
-	#print 'ENTER createNetwork'
-	address = openstackUtils.parseAddress(quantumUrl)
-	url = openstackUtils.parseBaseURL(quantumUrl, address) + '/v2.0/networks'
-	postBody = json.dumps({'network' : networkProps})
-	headers = {'X-Auth-Token' : token}
-	return restUtils.postJSON(address, url, postBody, headers)
+        #print 'ENTER createNetwork'
+        address = openstackUtils.parseAddress(quantumUrl)
+        url = openstackUtils.parseBaseURL(quantumUrl, address) + '/v2.0/networks'
+        postBody = json.dumps({'network' : networkProps})
+        headers = {'X-Auth-Token' : token}
+        return restUtils.postJSON(address, url, postBody, headers)
 
 def updateNetwork(quantumUrl, token, network_id, networkProps) :
-	#print 'ENTER updateNetwork'
-	address = openstackUtils.parseAddress(quantumUrl)
-	url = openstackUtils.parseBaseURL(quantumUrl, address) + '/v2.0/networks/' + network_id
-	putBody = json.dumps({'network' : networkProps})
-	headers = {'X-Auth-Token' : token}
-	return restUtils.putJSON(address, url, putBody, headers)
+        #print 'ENTER updateNetwork'
+        address = openstackUtils.parseAddress(quantumUrl)
+        url = openstackUtils.parseBaseURL(quantumUrl, address) + '/v2.0/networks/' + network_id
+        putBody = json.dumps({'network' : networkProps})
+        headers = {'X-Auth-Token' : token}
+        return restUtils.putJSON(address, url, putBody, headers)
 
 def deleteNetwork(quantumUrl, token, network_id) :
-	#print 'ENTER deleteNetwork'
-	address = openstackUtils.parseAddress(quantumUrl)
-	url = openstackUtils.parseBaseURL(quantumUrl, address) + '/v2.0/networks/' + network_id
-	headers = {'X-Auth-Token' : token}
-	return restUtils.request('DELETE', address, url, headers)
+        #print 'ENTER deleteNetwork'
+        address = openstackUtils.parseAddress(quantumUrl)
+        url = openstackUtils.parseBaseURL(quantumUrl, address) + '/v2.0/networks/' + network_id
+        headers = {'X-Auth-Token' : token}
+        return restUtils.request('DELETE', address, url, headers)
 
 def listSubnets(quantumUrl, token) :
-	#print 'ENTER listSubnets'
-	address = openstackUtils.parseAddress(quantumUrl)
-	url = openstackUtils.parseBaseURL(quantumUrl, address) + '/v2.0/subnets'
-	headers = {'X-Auth-Token' : token}
-	return restUtils.getJSON(address, url, headers)
+        #print 'ENTER listSubnets'
+        address = openstackUtils.parseAddress(quantumUrl)
+        url = openstackUtils.parseBaseURL(quantumUrl, address) + '/v2.0/subnets'
+        headers = {'X-Auth-Token' : token}
+        return restUtils.getJSON(address, url, headers)
 
 def transferIP(quantumUrl, token, portProps) :
     #print 'ENTER transferIP'
@@ -66,45 +66,45 @@ def transferIP(quantumUrl, token, portProps) :
     return restUtils.postJSON(address, url, postBody, headers)
 
 def showSubnet(quantumUrl, token, subnet_id) :
-	#print 'ENTER showSubnet'
-	address = openstackUtils.parseAddress(quantumUrl)
-	url = openstackUtils.parseBaseURL(quantumUrl, address) + '/v2.0/subnets/' + subnet_id
-	headers = {'X-Auth-Token' : token}
-	return restUtils.getJSON(address, url, headers)
+        #print 'ENTER showSubnet'
+        address = openstackUtils.parseAddress(quantumUrl)
+        url = openstackUtils.parseBaseURL(quantumUrl, address) + '/v2.0/subnets/' + subnet_id
+        headers = {'X-Auth-Token' : token}
+        return restUtils.getJSON(address, url, headers)
 
 def createSubnet(quantumUrl, token, subnetProps) :
-	#print 'ENTER createSubnet'
-	address = openstackUtils.parseAddress(quantumUrl)
-	url = openstackUtils.parseBaseURL(quantumUrl, address) + '/v2.0/subnets'
-	postBody = json.dumps({'subnet' : subnetProps})
-	headers = {'X-Auth-Token' : token}
-	return restUtils.postJSON(address, url, postBody, headers)
+        #print 'ENTER createSubnet'
+        address = openstackUtils.parseAddress(quantumUrl)
+        url = openstackUtils.parseBaseURL(quantumUrl, address) + '/v2.0/subnets'
+        postBody = json.dumps({'subnet' : subnetProps})
+        headers = {'X-Auth-Token' : token}
+        return restUtils.postJSON(address, url, postBody, headers)
 
 def updateSubnet(quantumUrl, token, subnet_id, subnetProps) :
-	#print 'ENTER updateSubnet'
-	address = openstackUtils.parseAddress(quantumUrl)
-	url = openstackUtils.parseBaseURL(quantumUrl, address) + '/v2.0/subnets/' + subnet_id
-	putBody = json.dumps({'subnet' : subnetProps})
-	headers = {'X-Auth-Token' : token}
-	return restUtils.putJSON(address, url, putBody, headers)
+        #print 'ENTER updateSubnet'
+        address = openstackUtils.parseAddress(quantumUrl)
+        url = openstackUtils.parseBaseURL(quantumUrl, address) + '/v2.0/subnets/' + subnet_id
+        putBody = json.dumps({'subnet' : subnetProps})
+        headers = {'X-Auth-Token' : token}
+        return restUtils.putJSON(address, url, putBody, headers)
 
 def deleteSubnet(quantumUrl, token, subnet_id) :
-	#print 'ENTER deleteSubnet'
-	address = openstackUtils.parseAddress(quantumUrl)
-	url = openstackUtils.parseBaseURL(quantumUrl, address) + '/v2.0/subnets/' + subnet_id
-	headers = {'X-Auth-Token' : token}
-	return restUtils.request('DELETE', address, url, headers)
+        #print 'ENTER deleteSubnet'
+        address = openstackUtils.parseAddress(quantumUrl)
+        url = openstackUtils.parseBaseURL(quantumUrl, address) + '/v2.0/subnets/' + subnet_id
+        headers = {'X-Auth-Token' : token}
+        return restUtils.request('DELETE', address, url, headers)
 
 ## SRIOV port
 def createSriovPorts(quantumUrl, token, sriovPortProps) :
-	#print 'ENTER createSubnet'
-	address = openstackUtils.parseAddress(quantumUrl)
-	url = openstackUtils.parseBaseURL(quantumUrl, address) + '/v2.0//ports'
-	postBody = json.dumps({'port' : sriovPortProps})
-	headers = {'X-Auth-Token' : token}
-	print url
-	print postBody
-	return restUtils.postJSON(address, url, postBody, headers)
+        #print 'ENTER createSubnet'
+        address = openstackUtils.parseAddress(quantumUrl)
+        url = openstackUtils.parseBaseURL(quantumUrl, address) + '/v2.0//ports'
+        postBody = json.dumps({'port' : sriovPortProps})
+        headers = {'X-Auth-Token' : token}
+        print(url)
+        print(postBody)
+        return restUtils.postJSON(address, url, postBody, headers)
 
 ## Network Node host registration
 def registerNetNodes(quantumUrl, token, netnodeProps):

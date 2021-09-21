@@ -14,14 +14,14 @@ from rest_framework import svt_tester_base
 from rest_framework import novaUtils
 from rest_framework import glanceUtils
 from rest_framework.restUtils import HttpError
-import Utils
+from . import Utils
 
 class SvtDeleteServers(svt_tester_base.SvtTesterBase):
     def test_1001_delete_images_shil(self):
         try:
             authTokenId = self.authent_id
 
-            print 'Obtaining the Image List...'
+            print('Obtaining the Image List...')
             image_list = []
             glanceUrl = self.getServiceUrl('image')
             _, img_list = glanceUtils.listImages(self.glanceUrl, authTokenId)
@@ -35,27 +35,27 @@ class SvtDeleteServers(svt_tester_base.SvtTesterBase):
 
             if to_be_deleted:
                 for image in to_be_deleted:
-                    print 'name=', image['name'], 'id=', image['id']
+                    print('name=', image['name'], 'id=', image['id'])
                     image_list.append({'name': image['name'],
                                 'id': image['id']})
-            print 'The number of images in the imagelist is %d' % len(image_list)
+            print('The number of images in the imagelist is %d' % len(image_list))
 
             get_deleted_image_list(authTokenId, self.glanceUrl, image_list)
-        except HttpError, e:
-            print 'HTTP Error: {0}'.format(e.body)
+        except HttpError as e:
+            print('HTTP Error: {0}'.format(e.body))
             exit(1)
 
 def get_deleted_image_list(authTokenId, glanceUrl, image_list):
     try:
         for image in image_list:
-            print 'Deleting image:name=', image['name'], 'id=', image['id']
+            print('Deleting image:name=', image['name'], 'id=', image['id'])
             deleteResponse, imageBody = \
                 glanceUtils.deleteImage(glanceUrl, authTokenId, image['id'])
-            print 'delete http response =', deleteResponse
-            print 'delete response=', imageBody
+            print('delete http response =', deleteResponse)
+            print('delete response=', imageBody)
 
-    except HttpError, e:
-        print 'HTTP Error: {0}'.format(e.body)
+    except HttpError as e:
+        print('HTTP Error: {0}'.format(e.body))
         exit(1)
 
 if __name__ == '__main__':

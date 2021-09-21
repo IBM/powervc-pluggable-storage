@@ -1043,7 +1043,7 @@ def isbootvolume(cinderUrl, token, volume_id):
     print("\n response dict: ,", responseDict)
     volume_detail_dict = responseDict['volume']
     print("\n volume_detail_dict: ,", volume_detail_dict)
-    if volume_detail_dict['metadata'].has_key('is_boot_volume'):
+    if 'is_boot_volume' in volume_detail_dict['metadata']:
         print("returning True")
         return True
     else:

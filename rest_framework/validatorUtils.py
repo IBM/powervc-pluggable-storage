@@ -14,15 +14,15 @@ from rest_framework import openstackUtils
 
 
 def initValidationRun(validatorUrl, token) :
-	print "ENTER initValidationRun() method"
-	address = openstackUtils.parseAddress(validatorUrl)
-	url = openstackUtils.parseBaseURL(validatorUrl, address) + '/v1/validate'
-	headers = {'X-Auth-Token' : token}
-	return restUtils.getJSON(address, url, headers)
+        print("ENTER initValidationRun() method")
+        address = openstackUtils.parseAddress(validatorUrl)
+        url = openstackUtils.parseBaseURL(validatorUrl, address) + '/v1/validate'
+        headers = {'X-Auth-Token' : token}
+        return restUtils.getJSON(address, url, headers)
 
 def getValidationResult(validatorUrl, token) :
-	print "ENTER getValidationResult() method"
-	address = openstackUtils.parseAddress(validatorUrl)
-	url = openstackUtils.parseBaseURL(validatorUrl, address) + '/v1/validate/result'
-	headers = {'X-Auth-Token' : token}
-	return restUtils.getJSON(address, url, headers)
+        print("ENTER getValidationResult() method")
+        address = openstackUtils.parseAddress(validatorUrl)
+        url = openstackUtils.parseBaseURL(validatorUrl, address) + '/v1/validate/result'
+        headers = {'X-Auth-Token' : token}
+        return restUtils.getJSON(address, url, headers)

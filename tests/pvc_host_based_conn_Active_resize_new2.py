@@ -124,11 +124,11 @@ class SvtCaptureTester(svt_tester_base.SvtTesterBase):
 
                 for vm in vm_list:
                     if vm['name'].startswith(server_name_prefix):
-			                     print('name=', vm['name'], 'id=', vm['id'])
-			                     to_be_resized.append(vm)
+                                             print('name=', vm['name'], 'id=', vm['id'])
+                                             to_be_resized.append(vm)
                 print('The number of VMs from the VMslist containing the s pre-fix is %d' % len(to_be_resized))
 
-#    	        if to_be_resized:
+#               if to_be_resized:
  #                   for server in to_be_resized:
   #                      print 'name=', server['name'], 'id=', server['id']
    #                     server_list.append(server)
@@ -178,16 +178,16 @@ def get_started_server_list(authTokenId, novaUrl, server_list):
         serverState = \
             server['OS-EXT-STS:vm_state']
         sys.stdout.write('Server state = {0} \n'.format(serverState))
-	serverHealth = \
-	    server['health_status']
-	sys.stdout.write('Server health = {0} \n'.format(serverHealth))
+        serverHealth = \
+            server['health_status']
+        sys.stdout.write('Server health = {0} \n'.format(serverHealth))
         sys.stdout.flush()
         if serverState == 'active' and serverHealth['health_value'] == 'OK':
             started_servers.append(server)
         elif serverState == 'stopped':
             Utils.send_start_server_request(authTokenId, novaUrl, server)
-	    sleep_needed = True
-	    started_servers.append(server)
+            sleep_needed = True
+            started_servers.append(server)
 
     if sleep_needed:
         print('Start initiated on all the Stopped VMs, Please wait.....')
@@ -205,14 +205,14 @@ def resize_servers(authTokenId, novaUrl, started_servers, concurrent_resizes, fl
                 return i
         curr_started_server = []
         min = concurrent_resizes
-		#print "min :", min
+                #print "min :", min
         if ((max-i) < min):
-			min=max-i
+                min=max-i
         for j in range(0, min):
-			curr_started_server.append(started_servers[i+j])
+                curr_started_server.append(started_servers[i+j])
         for server in curr_started_server:
                 print("The current active servers is %s", server['name'])
-			#print "j:", j
+                        #print "j:", j
         resize_servers_sub(authTokenId, novaUrl, curr_started_server, flavor)
         i += min
     return i
@@ -229,7 +229,7 @@ def resize_servers_sub(authTokenId, novaUrl, curr_started_servers, flavor1):
         for flavor in flavor_list:
             if flavor['name'] == flavor1:
                 resize_flavorId = flavor['id']
-		print(flavor['name'], resize_flavorId)
+                print(flavor['name'], resize_flavorId)
 
         if not resize_flavorId:
             print("Resize Flavor, {0} not found".format(flavor1))

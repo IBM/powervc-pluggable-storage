@@ -84,7 +84,7 @@ class SvtStartServerTester(svt_tester_base.SvtTesterBase):
             server_list = []
             to_be_started = vm_list
 
-    	    if to_be_started:
+            if to_be_started:
                 for server in to_be_started:
                     print('name=', server['name'], 'id=', server['id'])
                     server_list.append({'name': server['name'],
@@ -118,12 +118,12 @@ def conc_start_servers(authTokenId, novaUrl, server_list, concurrent_starts):
                         print('no started servers found, exiting')
                         exit(1)
                 print('started servers=', str(started_servers))
-                i += min 
-        return max       
+                i += min
+        return max
 
 def get_started_server_list(authTokenId, novaUrl, server_list):
     print('Obtaining the Managed Started Server List...')
-     
+
     started_servers = []
     for server in server_list:
         print('Getting Initial VM state...')
@@ -138,7 +138,7 @@ def get_started_server_list(authTokenId, novaUrl, server_list):
             started_servers.append(server)
         elif serverState == 'stopped':
             Utils.send_start_server_request(authTokenId, novaUrl, server)
-	    started_servers.append(server)
+            started_servers.append(server)
     print('Start initiated on all the Stopped VMs, Please wait.....')
     time.sleep(30)
     print('The number of started servers in the started_server list is %d' % len(started_servers))

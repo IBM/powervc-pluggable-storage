@@ -88,7 +88,7 @@ def createBulkVolume(cinderUrl, token, volumeProps):
     #print 'ENTER createVolume'
     address = openstackUtils.parseAddress(cinderUrl)
     url = BULKVOLS % openstackUtils.parseBaseURL(cinderUrl, address)
-    print url
+    print(url)
     postBody = json.dumps(volumeProps)
     headers = {'X-Auth-Token': token}
     return restUtils.postJSON(address, url, postBody, headers)
@@ -314,8 +314,8 @@ def createConsistencyGroups(cinderUrl, token, connectionProps):
     address = openstackUtils.parseAddress(cinderUrl)
     url = openstackUtils.parseBaseURL(cinderUrl, address) + '/consistencygroups'
     postBody = json.dumps({'consistencygroup': connectionProps})
-    print url
-    print postBody
+    print(url)
+    print(postBody)
     headers = {'X-Auth-Token': token}
     return restUtils.postJSON(address, url, postBody, headers)
 
@@ -331,8 +331,8 @@ def createConsistencyGroupssrc(cinderUrl, token, connectionProps):
     address = openstackUtils.parseAddress(cinderUrl)
     url = openstackUtils.parseBaseURL(cinderUrl, address) + '/consistencygroups' + '/create_from_src'
     postBody = json.dumps({'consistencygroup-from-src': connectionProps})
-    print url
-    print postBody
+    print(url)
+    print(postBody)
     headers = {'X-Auth-Token': token}
     return restUtils.postJSON(address, url, postBody, headers)
 
@@ -348,8 +348,8 @@ def addVolumeToConsistencyGroups(cinderUrl, token, cgID, connectionProps):
     address = openstackUtils.parseAddress(cinderUrl)
     url = openstackUtils.parseBaseURL(cinderUrl, address) + '/consistencygroups/' + cgID + '/update'
     postBody = json.dumps({'consistencygroup': connectionProps})
-    print url
-    print postBody
+    print(url)
+    print(postBody)
     headers = {'X-Auth-Token': token}
     return restUtils.putJSON(address, url, postBody, headers)
 
@@ -357,8 +357,8 @@ def removeVolumeToConsistencyGroups(cinderUrl, token, cgID, connectionProps):
     address = openstackUtils.parseAddress(cinderUrl)
     url = openstackUtils.parseBaseURL(cinderUrl, address) + '/consistencygroups/' + cgID + '/update'
     postBody = json.dumps({'consistencygroup': connectionProps})
-    print url
-    print postBody
+    print(url)
+    print(postBody)
     headers = {'X-Auth-Token': token}
     return restUtils.putJSON(address, url, postBody, headers)
 
@@ -382,9 +382,9 @@ def createGenericGroupType(cinderUrl, token, connectionProps):
     address = openstackUtils.parseAddress(cinderUrl)
     url = openstackUtils.parseBaseURL(cinderUrl, address) +'/group_types'
     postBody = json.dumps({'group_type': connectionProps})
-    print postBody
+    print(postBody)
     headers = {'X-Auth-Token': token,'OpenStack-API-Version': 'volume latest'}
-    print headers
+    print(headers)
     return restUtils.postJSON(address, url, postBody, headers)
 
 def ShowGenericGroupType(cinderUrl, token, group_type_ID):
@@ -416,7 +416,7 @@ def createGenericGroup(cinderUrl, token, connectionProps):
     address = openstackUtils.parseAddress(cinderUrl)
     url = openstackUtils.parseBaseURL(cinderUrl, address) + '/groups'
     postBody = json.dumps({'group': connectionProps})
-    print postBody
+    print(postBody)
     headers = {'X-Auth-Token': token,'OpenStack-API-Version': 'volume latest'}
     return restUtils.postJSON(address, url, postBody, headers)
 
@@ -474,7 +474,7 @@ def listConsistencySnapshots(cinderUrl, token):
 def deleteConsistencySnapshots(cinderUrl, token, snapID):
     address = openstackUtils.parseAddress(cinderUrl)
     url = openstackUtils.parseBaseURL(cinderUrl, address) + '/cgsnapshots/' + snapID
-    print url
+    print(url)
     headers = {'X-Auth-Token': token}
     return restUtils.deleteJSON(address, url, headers)
 
@@ -485,7 +485,7 @@ def emc_reg(cinderUrl, token, emc_host_type, emc_disp_name, emc_access_ip, emc_p
         for i in range(0,emc_storage_array_id_zeros):
                 emc_sa_id = str(0) + str(emc_sa_id)
 
-        print "EMC Registration storage array id : ", emc_sa_id
+        print("EMC Registration storage array id : ", emc_sa_id)
         hostProps = { "host_type": emc_host_type,
                       "access_ip": emc_access_ip,
                       "host_display_name": emc_disp_name,
@@ -496,14 +496,14 @@ def emc_reg(cinderUrl, token, emc_host_type, emc_disp_name, emc_access_ip, emc_p
                       "volume_pool_name": emc_pool_name,
                      }
         reg_key = 'Registration'
-        print "EMC Registration : hostProps", hostProps
+        print("EMC Registration : hostProps", hostProps)
 
         address = openstackUtils.parseAddress(cinderUrl)
         url = openstackUtils.parseBaseURL(cinderUrl, address) + '/os-hosts'
         postbody = json.dumps({'host' : { 'registration' : hostProps}})
         headers = {'X-Auth-Token': token}
 
-        print "EMC Registration : postbody", postbody
+        print("EMC Registration : postbody", postbody)
         registrnRespns, registrnRespnsBodyJSON = restUtils.postJSON(address, url, postbody, headers)
 
 
@@ -532,7 +532,7 @@ def vmax_reg(cinderUrl, token, vmax_host_type, vmax_disp_name, vmax_access_ip, v
         for i in range(0,3):
                 vmax_sa_id = str(0) + str(vmax_sa_id)
 
-        print "vmax Registration storage array id : ", vmax_sa_id
+        print("vmax Registration storage array id : ", vmax_sa_id)
         hostProps = { "host_type": vmax_host_type,
                       "access_ip": vmax_access_ip,
                       "host_display_name": vmax_disp_name,
@@ -543,14 +543,14 @@ def vmax_reg(cinderUrl, token, vmax_host_type, vmax_disp_name, vmax_access_ip, v
                       "volume_pool_name": vmax_pool_name,
                      }
         reg_key = 'Registration'
-        print "vmax Registration : hostProps", hostProps
+        print("vmax Registration : hostProps", hostProps)
 
         address = openstackUtils.parseAddress(cinderUrl)
         url = openstackUtils.parseBaseURL(cinderUrl, address) + '/os-hosts'
         postbody = json.dumps({'host' : { 'registration' : hostProps}})
         headers = {'X-Auth-Token': token}
 
-        print "vmax Registration : postbody", postbody
+        print("vmax Registration : postbody", postbody)
         registrnRespns, registrnRespnsBodyJSON = restUtils.postJSON(address, url, postbody, headers)
         return str(registrnRespnsBodyJSON)
 
@@ -577,14 +577,14 @@ def hds_reg(cinderUrl, token, hds_host_type,hds_access_ip,hds_display_name,hds_u
 
                      }
         reg_key = 'Registration'
-        print "HDS Registration : hostProps", hostProps
+        print("HDS Registration : hostProps", hostProps)
 
         address = openstackUtils.parseAddress(cinderUrl)
         url = openstackUtils.parseBaseURL(cinderUrl, address) + '/os-hosts'
         postbody = json.dumps({'host' : { 'registration' : hostProps}})
         headers = {'X-Auth-Token': token}
 
-        print "HDS Registration : postbody", postbody
+        print("HDS Registration : postbody", postbody)
         registrnRespns, registrnRespnsBodyJSON = restUtils.postJSON(address, url, postbody, headers)
         return str(registrnRespnsBodyJSON)
 

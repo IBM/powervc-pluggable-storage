@@ -279,7 +279,7 @@ def conn_dettach_vols(authTokenId, novaUrl, volumes_to_dettach, con_dettach):
                         print(("The current started servers", volumes_to_dettach))
                         #print "j:", j
                 conn_dettach_vols_sub(authTokenId, novaUrl, curr_dettach_vol)
-		time.sleep(10)
+                time.sleep(10)
                 i += min
         return i
 
@@ -288,9 +288,9 @@ def conn_dettach_vols_sub(authTokenId, novaUrl, curr_dettach_vol):
     for vol_det in curr_dettach_vol:
         volid = vol_det['vol_id']
         vmid = vol_det['vm_id']
-	print(('Dettaching Volume=', vmid, volid))
+        print(('Dettaching Volume=', vmid, volid))
         novaUtils.dettachVolume(novaUrl, authTokenId, vmid, volid)
-    	time.sleep(4)
+        time.sleep(4)
 
 if __name__ == '__main__':
     svt_tester_base.main()
