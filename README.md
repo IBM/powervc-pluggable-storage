@@ -31,14 +31,15 @@ Prerequisites
 -------------
 Prerequisites to run the framework:
 
-1. Python 2.7 is required on the system where you planning to run tests.
-2. PowerVC should be installed.
-3. All the resources like HMC, Hosts, Storages and Switches should already be registered into PowerVC.
+1. Python 3.9 or Python 3.11 is required on the system where you planning to run tests.
+2. Install nose module using pip. 
+3. PowerVC should be installed.
+4. All the resources like HMC, Hosts, Storages and Switches should already be registered into PowerVC.
    Refer below PowerVC KC links for more information:
    https://www.ibm.com/support/knowledgecenter/en/SSXK2N_1.4.1/com.ibm.powervc.standard.help.doc/kc_welcome-standard-supermap.html
    https://www.ibm.com/support/knowledgecenter/en/SSXK2N_1.4.1/com.ibm.powervc.standard.help.doc/powervc_pluggable_v_integrated.html
    https://www.ibm.com/support/knowledgecenter/en/SSXK2N_1.4.1/com.ibm.powervc.standard.help.doc/powervc_pluggable_storage.html
-4. Images and Network should already be created. More information:
+5. Images and Network should already be created. More information:
    https://www.ibm.com/support/knowledgecenter/en/SSXK2N_1.4.1/com.ibm.powervc.standard.help.doc/PowerVC_creating_initial_vm.html
 
 
