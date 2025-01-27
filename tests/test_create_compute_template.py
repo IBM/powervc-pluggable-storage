@@ -99,11 +99,10 @@ class CreateComputeTemplate(svt_tester_base.SvtTesterBase):
                 print('option=', option, 'not found in configuration file')
                 options_missing = True
         if options_missing:
-            print(f'Provide missing options in the configuration file {self.config}, {self.config_section}.')
+            print(f'Provide missing options in the configuration file {self.config}.')
             os._exit(1)
 
         novaUrl = self.getServiceUrl('compute')
-        print(f"self.config_get is {self.config_get}")
         flavor_name = self.config_get(FLAVOR_NAME)
         desired_ram = self.config_get(DESIRED_RAM)
         desired_cpu = self.config_get(DESIRED_CPU)
