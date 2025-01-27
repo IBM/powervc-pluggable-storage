@@ -16,7 +16,7 @@ from rest_framework import svt_tester_base
 from rest_framework.restUtils import HttpError
 from datetime import datetime
 from datetime import timedelta
-from . import Utils
+from tests import Utils
 import sys
 import time
 import os
@@ -168,7 +168,7 @@ def capture_servers(authTokenId, novaUrl, glanceUrl, stopped_servers,
                     TIMEOUT, SLEEP_INTERVAL, concurrent_captures, cap_name_prefix):
     max = len(stopped_servers)
     i = 0
-    while i < list(range(len(stopped_servers))):
+    while i < len(list(range(len(stopped_servers)))):
         if ((i == max) and (max-i) == 0):
             print('Total number of VMs captured for each iteration is %d' % i)
             return i

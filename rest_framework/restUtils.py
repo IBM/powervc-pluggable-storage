@@ -12,6 +12,7 @@
 from rest_framework import log
 import sys
 import json
+import ssl
 import http.client
 
 useHTTPS = True #change this if you want to use HTTP
@@ -27,7 +28,10 @@ class HttpError(Exception) :
 def request(method, address, url, headers=None, postBody=None) :
     if useHTTPS :
         protocol = 'https'
-        conn = http.client.HTTPSConnection(address)
+        # Create an unverified SSL context 
+        ssl_context = ssl._create_unverified_context() 
+        # Use the unverified SSL context with HTTPSConnection 
+        conn = http.client.HTTPSConnection(address, context=ssl_context)
     else :
         protocol = 'http'
         conn = http.client.HTTPConnection(address)
@@ -68,7 +72,10 @@ def request(method, address, url, headers=None, postBody=None) :
 def request2(method, address, url, headers=None, postBody=None) :
     if useHTTPS :
         protocol = 'https'
-        conn = http.client.HTTPSConnection(address)
+        # Create an unverified SSL context
+        ssl_context = ssl._create_unverified_context()
+        # Use the unverified SSL context with HTTPSConnection
+        conn = http.client.HTTPSConnection(address, context=ssl_context)
     else :
         protocol = 'http'
         conn = http.client.HTTPConnection(address)
