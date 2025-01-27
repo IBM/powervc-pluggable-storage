@@ -46,12 +46,10 @@ class SVTTTVValidator(svt_tester_base.SvtTesterBase):
         print(" ----------waiting for TTV to complete---------")
         time.sleep(total_time_out)
         ttv_results = validatorUtils.getValidationResult(validatorUrl,auth_token)
-        print(f"ttv results is {ttv_results}")
         output= ttv_results[1]['prior-results'][0]['check-groups']
 
         print("\n")
         for item in output:
-            print(f"item is {output[item]}")
             validations = output[item]['RESOURCE_VALIDATOR']['checks']
             for validation in validations:
                 if check_status in validation['status']:
