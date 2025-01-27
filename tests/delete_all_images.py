@@ -14,7 +14,7 @@ from rest_framework import svt_tester_base
 from rest_framework import novaUtils
 from rest_framework import glanceUtils
 from rest_framework.restUtils import HttpError
-from . import Utils
+from tests import Utils
 
 class SvtDeleteServers(svt_tester_base.SvtTesterBase):
     def test_1001_delete_images_shil(self):

@@ -15,7 +15,7 @@ from rest_framework import novaUtils
 from rest_framework import cinderUtils
 from rest_framework.restUtils import HttpError
 import time
-from . import Utils
+from tests import Utils
 from datetime import datetime
 import pprint
 import fnmatch
