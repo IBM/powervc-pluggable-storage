@@ -15,7 +15,7 @@
 from rest_framework import svt_tester_base
 from rest_framework.restUtils import HttpError
 from rest_framework.statemachine import StateMachine
-from . import Utils
+from tests import Utils
 import time
 import os
 #Variables for report generation
@@ -140,7 +140,7 @@ class SvtMobilityTester(svt_tester_base.SvtTesterBase):
         if not to_be_migrated:
             print('')
             print('No Servers found starting with {0} for host {1}:', \
-                str(server_name_prefix, src_host))
+                   server_name_prefix, src_host)
         else:
             print('')
             print('to_be_migrated=', str(to_be_migrated))

@@ -163,9 +163,9 @@ pvc_host_based_conn_start_servers.py : test_1001_host_Based_start_servers
             print("\n"+":"*130)
             print("\n"*1+"Running python script: "+script_name+"\n"*1)
             if test_case.lower() == 'NONE'.lower():
-                cmd = 'python'+" -u"+" "+"tests_svt/"+script_name+" "+config_file
+                cmd = 'python'+" -u"+" "+"tests/"+script_name+" "+config_file
             else:
-                cmd = 'python'+" -u"+" "+"tests_svt/"+script_name+" "+"--test="+test_case+" "+config_file
+                cmd = 'python'+" -u"+" "+"tests/"+script_name+" "+"--test="+test_case+" "+config_file
             print("\n"*1)
             print(cmd)
             try:

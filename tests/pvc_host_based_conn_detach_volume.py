@@ -15,7 +15,7 @@ from rest_framework import novaUtils
 from rest_framework import cinderUtils
 from rest_framework.restUtils import HttpError
 import time
-from . import Utils
+from tests import Utils
 from datetime import datetime
 import pprint
 from datetime import datetime
@@ -265,7 +265,7 @@ def test_1009_Dettach_Volume(cinderUrl, auth_id, host_name, vol_start_index, vol
 def conn_dettach_vols(authTokenId, novaUrl, volumes_to_dettach, con_dettach):
         max = len(volumes_to_dettach)
         i = 0
-        while i < list(range(len(volumes_to_dettach))):
+        while i < len(list(range(len(volumes_to_dettach)))):
                 if ((i == max) and (max-i) == 0):
                         print(('Total number of volumes to detach for each iteration is %d' % i))
                         return i

@@ -14,7 +14,7 @@ from rest_framework import glanceUtils
 from rest_framework import novaUtils
 from rest_framework import svt_tester_base
 from rest_framework.restUtils import HttpError
-from . import Utils
+from tests import Utils
 import sys
 import time
 import os
@@ -81,6 +81,7 @@ class SvtStartServerTester(svt_tester_base.SvtTesterBase):
         novaUrl = self.getServiceUrl('compute')
         try:
             vm_list = Utils.get_server_list_host(authTokenId, novaUrl, src_host)
+            print(f"vm list is {vm_list}")
             server_list = []
             to_be_started = vm_list
 
@@ -99,7 +100,7 @@ class SvtStartServerTester(svt_tester_base.SvtTesterBase):
 def conc_start_servers(authTokenId, novaUrl, server_list, concurrent_starts):
         max = len(server_list)
         i = 0
-        while i < list(range(len(server_list))):
+        while i < len(range(len(server_list))):
                 #print "i :", i
                 if ((i == max) and (max-i) == 0):
                         print('Total number of servers started for each iteration is %d' % i)

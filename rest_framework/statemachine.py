@@ -9,9 +9,6 @@
 #See the License for the specific language governing permissions and
 #limitations under the License.
 
-from string import upper
-
-
 class StateMachine():
 
     def __init__(self):
@@ -20,13 +17,13 @@ class StateMachine():
         self.endStates = []
 
     def add_state(self, name, handler, end_state=0):
-        name = upper(name)
+        name = name.upper()
         self.handlers[name] = handler
         if end_state:
             self.endStates.append(name)
 
     def set_start(self, name):
-        self.startState = upper(name)
+        self.startState = name.upper()
 
     def run(self, cargo):
         try:
@@ -39,10 +36,10 @@ class StateMachine():
 
         while 1:
             (newState, cargo) = handler(cargo)
-            if upper(newState) in self.endStates:
+            if newState.upper() in self.endStates:
                 break
             else:
-                handler = self.handlers[upper(newState)]
+                handler = self.handlers[newState.upper()]
 
     def validate(self):
         try:
@@ -54,12 +51,12 @@ class StateMachine():
             raise InitializationError("at least one state must be an end_state")
 
     def is_end_state(self, state):
-        if upper(state) in self.endStates:
+        if state.upper() in self.endStates:
             return True
         return False
 
     def step(self, state, cargo):
-        handler = self.handlers[upper(state)]
+        handler = self.handlers[state.upper()]
         if handler is None:
             print('handlers', str(self.handlers))
             print('handler', handler)
