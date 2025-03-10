@@ -16,7 +16,7 @@ from rest_framework import svt_tester_base
 from rest_framework.restUtils import HttpError
 from datetime import datetime
 from datetime import timedelta
-from . import Utils
+from tests import Utils
 import sys
 import time
 import os
@@ -199,7 +199,7 @@ def get_started_server_list(authTokenId, novaUrl, server_list):
 def resize_servers(authTokenId, novaUrl, started_servers, concurrent_resizes, flavor):
     max = len(started_servers)
     i = 0
-    while i < list(range(len(started_servers))) and i < 8:
+    while i < len(list(range(len(started_servers)))) and i < 8:
         if ((i == max) and (max-i) == 0):
                 print('Total number of VMs to be resized for each iteration is %d' % i)
                 return i

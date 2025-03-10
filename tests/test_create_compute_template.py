@@ -17,7 +17,7 @@ from rest_framework import svt_tester_base
 from rest_framework.svt_tester_base import SvtTesterBase
 from rest_framework.restUtils import HttpError
 from rest_framework.statemachine import StateMachine
-from . import Utils
+from tests import Utils
 import time
 import subprocess
 import sys
@@ -61,6 +61,7 @@ class CreateComputeTemplate(svt_tester_base.SvtTesterBase):
 
      required_options = [FLAVOR_NAME, DESIRED_RAM, MIN_RAM, MAX_RAM, DESIRED_CPU, MIN_CPU, MAX_CPU, DESIRED_PROC_UNITS,
                          MIN_PROC_UNITS, MAX_PROC_UNITS, DISK_SIZE, REMOTE_RESTART]
+     #config_section = 'test_create_compute_templates'  # Ensure this is the right section
 
      def create_Props_for_compute_template(self, flavor_name, desired_ram, desired_cpu, disk_size):
         Props = {}
@@ -98,11 +99,10 @@ class CreateComputeTemplate(svt_tester_base.SvtTesterBase):
                 print('option=', option, 'not found in configuration file')
                 options_missing = True
         if options_missing:
-            print('Provide missing options in the configuration file.')
+            print(f'Provide missing options in the configuration file {self.config}.')
             os._exit(1)
 
         novaUrl = self.getServiceUrl('compute')
-
         flavor_name = self.config_get(FLAVOR_NAME)
         desired_ram = self.config_get(DESIRED_RAM)
         desired_cpu = self.config_get(DESIRED_CPU)

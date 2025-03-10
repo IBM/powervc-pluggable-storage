@@ -549,7 +549,7 @@ def unique_server_name(name_prefix, ip_address):
         ip_octet_list[i] = ip_octet_list[i].zfill(3)
 
     suffix_list = ip_octet_list[2:4]
-    unique_name = name_prefix + '_' + string.join(suffix_list, '_')
+    unique_name = name_prefix + '_' + '_'.join(suffix_list)
     return unique_name
 
 
@@ -848,7 +848,7 @@ def get_netmask(authTokenId, quantumUrl, network_id, ip_address):
                     temp = []
                     for i in range(len(netmask_list)):
                         temp.append(str(netmask_list[i]))
-                    netmask = string.join(temp, '.')
+                    netmask = '.'.join(temp)
                     return netmask
     return None
 
@@ -862,7 +862,7 @@ def next_ip(start_ip, netmask, incr):
         temp = []
         for i in range(len(new_ip_list)):
             temp.append(str(new_ip_list[i]))
-        ip = string.join(temp, '.')
+        ip = '.'.join(temp)
         return ip
     else:
         return None
@@ -956,7 +956,7 @@ def unique_server_name_ip6(name_prefix, ip_address):
         #ip_octet_list[i] = ip_octet_list[i].zfill(7)
         suffix_list = ip_octet_list[7]
         print(suffix_list)
-        unique_name = name_prefix + '_' + string.join(suffix_list, '_')
+        unique_name = name_prefix + '_' + '_'.join(suffix_list)
     return unique_name
 
 

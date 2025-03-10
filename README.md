@@ -32,14 +32,15 @@ Prerequisites
 -------------
 Prerequisites to run the framework:
 
-1. Python 2.7 is required on the system where you planning to run tests.
-2. PowerVC should be installed.
-3. All the resources like HMC, Hosts, Storages and Switches should already be registered into PowerVC.
+1. Python 3.9 or Python 3.11 is required on the system where you planning to run tests.
+2. Install nose module using pip. 
+3. PowerVC should be installed.
+4. All the resources like HMC, Hosts, Storages and Switches should already be registered into PowerVC.
    Refer below PowerVC KC links for more information:
    https://www.ibm.com/support/knowledgecenter/en/SSXK2N_1.4.1/com.ibm.powervc.standard.help.doc/kc_welcome-standard-supermap.html
    https://www.ibm.com/support/knowledgecenter/en/SSXK2N_1.4.1/com.ibm.powervc.standard.help.doc/powervc_pluggable_v_integrated.html
    https://www.ibm.com/support/knowledgecenter/en/SSXK2N_1.4.1/com.ibm.powervc.standard.help.doc/powervc_pluggable_storage.html
-4. Images and Network should already be created. More information:
+5. Images and Network should already be created. More information:
    https://www.ibm.com/support/knowledgecenter/en/SSXK2N_1.4.1/com.ibm.powervc.standard.help.doc/PowerVC_creating_initial_vm.html
 
 
@@ -184,69 +185,3 @@ eg:
 `ps -aux | grep smart`
 
 `kill -9 <process ID>`
-
-If you are seeing below ssl issue,please use workaround:
-
-Before running a script,Please run below command in your env
-export PYTHONHTTPSVERIFY=0;
-
-1)Fix ssl error 
-```
->>> IOError <<
-    self.send(msg)
-  File "/usr/lib64/python2.7/httplib.py", line 852, in send
-    self.connect()
-  File "/usr/lib64/python2.7/httplib.py", line 1275, in connect
-    server_hostname=sni_hostname)
-  File "/usr/lib64/python2.7/ssl.py", line 348, in wrap_socket
-    _context=self)
-  File "/usr/lib64/python2.7/ssl.py", line 609, in __init__
-    self.do_handshake()
-  File "/usr/lib64/python2.7/ssl.py", line 831, in do_handshake
-    self._sslobj.do_handshake()
-SSLError: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed (_ssl.c:618)
-```
-workaround:
-export PYTHONHTTPSVERIFY=0
-
-change ssl.py file with following code:
-
-[root@vm-221 ~]# diff ssl.py /usr/lib64/python3.6/ssl.py
-92c92
-< 
----
-> import ssl
-464c464
-<         context.verify_mode = CERT_REQUIRED
----
->         context.verify_mode = ssl.CERT_REQUIRED
-476c476
-< def _create_unverified_context(protocol=PROTOCOL_TLS, *, cert_reqs=None,
----
-> def _create_unverified_context(protocol=PROTOCOL_TLS, *, cert_reqs=CERT_NONE,
-494a495,496
->     if not check_hostname:
->         context.check_hostname = False
-496,497c498,500
-<         context.verify_mode = cert_reqs
-<     context.check_hostname = check_hostname
----
->         context.verify_mode = ssl.CERT_NONE
->     if check_hostname:
->         context.check_hostname = True
-700a704
->             
-702c706
-<             self._context.verify_mode = cert_reqs
----
->             self._context.verify_mode = ssl.CERT_NONE
-765a770
->                 ssl._create_default_https_context = ssl._create_unverified_context
-1181c1186
-<         cert_reqs = CERT_REQUIRED
----
->         cert_reqs = CERT_NONE
-1185c1190
-<                                      cert_reqs=cert_reqs,
----
->                                      cert_reqs=ssl.CERT_NONE,
